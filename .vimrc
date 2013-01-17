@@ -31,10 +31,13 @@ filetype indent on
 " Vundle manager
 Bundle 'gmarik/vundle'
 
+" NERDTree a file explorer in Vim
+Bundle 'scrooloose/nerdtree'
+
 " Git wrapper
 " Bundle 'tpope/vim-fugitive'
 " Solarized colorscheme
-Bundle 'altercation/vim-colors-solarized'
+" Bundle 'altercation/vim-colors-solarized'
 " Python IDEish stuff
 " Bundle 'klen/python-mode'
 " Load run code plugin
@@ -89,10 +92,10 @@ if has('gui_running')
   set guioptions-=L
 endif
 
+set lazyredraw
 set tw=79
 set colorcolumn=+1,+2
-hi ColorColumn 
-" ctermbg=darkgrey guibg=darkgrey
+hi colorcolumn ctermbg=darkgrey guibg=darkgrey
 
 set encoding=utf8
 try
