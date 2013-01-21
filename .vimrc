@@ -140,7 +140,7 @@ set wrap "Wrap lines
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap jk <Esc>
 inoremap ;; <Esc>
-nmap <leader>eol :set nolist!<Return>
+nmap <leader>ss :set nolist!<Return>
 nmap <leader>sc :set nospell!<Return>
 nnoremap <silent> <leader><Space> :noh<Return> 
 " Easy window navigation blah
