@@ -17,13 +17,14 @@ set showcmd             " show partial cmds
 "Allows backspacing over eol or indentation
 set backspace=indent,eol,start
 set mouse=a             " allow mouse for all modes
-"set autochdir           " change directory to current file
+set autochdir           " change directory to current file
 set nospell             " turn off spell check
 set hidden              "something about buffers
 
 let mapleader = ","     " makes <leader> comma
 filetype plugin on
 filetype indent on
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Bundles from Vundle
@@ -139,7 +140,7 @@ set wrap "Wrap lines
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap jk <Esc>
 inoremap ;; <Esc>
-nmap <leader>s :set nolist!<Return>
+nmap <leader>eol :set nolist!<Return>
 nmap <leader>sc :set nospell!<Return>
 nnoremap <silent> <leader><Space> :noh<Return> 
 " Easy window navigation blah
