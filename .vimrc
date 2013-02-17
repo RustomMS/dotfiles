@@ -17,7 +17,7 @@ set showcmd             " show partial cmds
 "Allows backspacing over eol or indentation
 set backspace=indent,eol,start
 set mouse=a             " allow mouse for all modes
-set autochdir           " change directory to current file
+"set autochdir           " change directory to current file
 set nospell             " turn off spell check
 set hidden              "something about buffers
 
@@ -25,6 +25,15 @@ let mapleader = ","     " makes <leader> comma
 filetype plugin on
 filetype indent on
 
+if has("terminfo")
+    let &t_Co=16
+    let &t_AB="\<Esc>[%?%p1%{8}%<%t%p1%{40}%+%e%p1%{92}%+%;%dm"
+    let &t_AF="\<Esc>[%?%p1%{8}%<%t%p1%{30}%+%e%p1%{82}%+%;%dm"
+else
+    let &t_Co=16
+    let &t_Sf="\<Esc>[3%dm"
+    le &t_Sb="\<Esc>[4%dm"
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Bundles from Vundle
@@ -38,7 +47,7 @@ Bundle 'scrooloose/nerdtree'
 " Git wrapper
 " Bundle 'tpope/vim-fugitive'
 " Solarized colorscheme
-" Bundle 'altercation/vim-colors-solarized'
+Bundle 'altercation/vim-colors-solarized'
 " Python IDEish stuff
 " Bundle 'klen/python-mode'
 " Load run code plugin
@@ -55,6 +64,12 @@ Bundle 'scrooloose/nerdtree'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set encoding=utf8
+try
+  lang en_US
+catch
+endtry
+
 set ruler               " Show current position
 set cmdheight=2         " cmd bar height 2 lines
 set laststatus=2        " always display status line
@@ -67,25 +82,22 @@ set confirm             " raise dialog during error
                         " when saving files
 set number              " display line numbers
 set showmode            " show current mode
-set cursorline          " shows current line 
+" set cursorline          " shows current line 
 " No annoying sound on errors
 set visualbell
 set t_vb=""
 set tm=500
 set wildmenu
 set wildmode=list:longest
-set scrolloff=5
-set listchars=tab:>-,trail:�,eol:$
+set scrolloff=7
+set listchars=eol:¬,tab:»\ ,trail:·
+" extends:>,precedes:<
 syntax enable " Enable syntax highlighting
-
-set ttyfast
-
-
 set background=dark
 colorscheme desert
 "colorscheme solarized
+set ttyfast
 
-highlight LineNr guifg=grey50
 if has('gui_running')
   set guifont=Consolas:h11
   set guioptions-=T
@@ -94,15 +106,6 @@ if has('gui_running')
 endif
 
 set lazyredraw
-set tw=79
-set colorcolumn=+1,+2
-hi colorcolumn ctermbg=darkgrey guibg=darkgrey
-
-set encoding=utf8
-try
-  lang en_US
-catch
-endtry
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -117,15 +120,15 @@ set noswapfile
 " Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
-set expandtab
+set noexpandtab
 
 " Be smart when using tabs ;)
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=8
+set tabstop=8
+set softtabstop=8
 
 " Linebreak on 500 characters
 set lbr
