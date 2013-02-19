@@ -19,20 +19,20 @@ set backspace=indent,eol,start
 set mouse=a             " allow mouse for all modes
 "set autochdir           " change directory to current file
 set nospell             " turn off spell check
-set hidden              "something about buffers
+set hidden              "something about bufers
 
-let mapleader = ","     " makes <leader> comma
+let mapleader=","     " makes <leader> comma
 filetype plugin on
 filetype indent on
 
 if has("terminfo")
-    let &t_Co=16
-    let &t_AB="\<Esc>[%?%p1%{8}%<%t%p1%{40}%+%e%p1%{92}%+%;%dm"
-    let &t_AF="\<Esc>[%?%p1%{8}%<%t%p1%{30}%+%e%p1%{82}%+%;%dm"
+    let &t_Co=256
+"    let &t_AB="\<Esc>[%?%p1%{8}%<%t%p1%{40}%+%e%p1%{92}%+%;%dm"
+    "let &t_AF="\<Esc>[%?%p1%{8}%<%t%p1%{30}%+%e%p1%{82}%+%;%dm"
 else
-    let &t_Co=16
-    let &t_Sf="\<Esc>[3%dm"
-    le &t_Sb="\<Esc>[4%dm"
+    let &t_Co=256
+"    let &t_Sf="\<Esc>[3%dm"
+"    let &t_Sb="\<Esc>[4%dm"
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -44,10 +44,15 @@ Bundle 'gmarik/vundle'
 " NERDTree a file explorer in Vim
 Bundle 'scrooloose/nerdtree'
 
-" Git wrapper
-" Bundle 'tpope/vim-fugitive'
 " Solarized colorscheme
 Bundle 'altercation/vim-colors-solarized'
+
+" Powerline - improved status line in vim
+Bundle 'Lokaltog/vim-powerline'
+
+" Git Fugitive
+Bundle 'tpope/vim-fugitive'
+
 " Python IDEish stuff
 " Bundle 'klen/python-mode'
 " Load run code plugin
@@ -73,6 +78,7 @@ endtry
 set ruler               " Show current position
 set cmdheight=2         " cmd bar height 2 lines
 set laststatus=2        " always display status line
+"set showmode            " show current mode
 set smartcase           " smart about cases during search
 set hlsearch            " highlight search results
 noh
@@ -81,12 +87,11 @@ set showmatch           " shows matching set of brackets
 set confirm             " raise dialog during error
                         " when saving files
 set number              " display line numbers
-set showmode            " show current mode
-" set cursorline          " shows current line 
+set cursorline          " shows current line 
 " No annoying sound on errors
 set visualbell
 set t_vb=""
-set tm=500
+set tm=1000
 set wildmenu
 set wildmode=list:longest
 set scrolloff=7
@@ -94,12 +99,12 @@ set listchars=eol:¬,tab:»\ ,trail:·
 " extends:>,precedes:<
 syntax enable " Enable syntax highlighting
 set background=dark
-colorscheme desert
-"colorscheme solarized
+"colorscheme desert
+colorscheme solarized
 set ttyfast
 
 if has('gui_running')
-  set guifont=Consolas:h11
+  set guifont=inconsolata:h10
   set guioptions-=T
   set guioptions-=l
   set guioptions-=L
@@ -142,7 +147,6 @@ set wrap "Wrap lines
 " Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap jk <Esc>
-inoremap ;; <Esc>
 nmap <leader>ss :set nolist!<Return>
 nmap <leader>sc :set nospell!<Return>
 nnoremap <silent> <leader><Space> :noh<Return> 
@@ -153,8 +157,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap ,w :w<Return>
 
-nnoremap ,svrc :source $HOME/.vimrc<Return>
-nnoremap ,vrc :tabe $HOME/.vimrc<Return> 
+nnoremap ,sv :source $HOME/.vimrc<Return>
+nnoremap ,v :tabe $HOME/.vimrc<Return> 
 
 nnoremap <F3> :tabe $HOME/.vimrc<Return> 
 nnoremap <F2> :source $HOME/.vimrc<Return>
