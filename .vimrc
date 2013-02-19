@@ -25,6 +25,12 @@ let mapleader=","     " makes <leader> comma
 filetype plugin on
 filetype indent on
 
+set encoding=utf8
+try
+  lang en_US.utf8
+catch
+endtry
+
 if has("terminfo")
     let &t_Co=256
 "    let &t_AB="\<Esc>[%?%p1%{8}%<%t%p1%{40}%+%e%p1%{92}%+%;%dm"
@@ -53,6 +59,8 @@ Bundle 'Lokaltog/vim-powerline'
 " Git Fugitive
 Bundle 'tpope/vim-fugitive'
 
+let g:Powerline_symbols='unicode'
+
 " Python IDEish stuff
 " Bundle 'klen/python-mode'
 " Load run code plugin
@@ -69,12 +77,6 @@ Bundle 'tpope/vim-fugitive'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UI
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set encoding=utf8
-try
-  lang en_US
-catch
-endtry
-
 set ruler               " Show current position
 set cmdheight=2         " cmd bar height 2 lines
 set laststatus=2        " always display status line
@@ -159,6 +161,8 @@ nnoremap ,w :w<Return>
 
 nnoremap ,sv :source $HOME/.vimrc<Return>
 nnoremap ,v :tabe $HOME/.vimrc<Return> 
+
+nnoremap ,t :NERDTree<cr>
 
 nnoremap <F3> :tabe $HOME/.vimrc<Return> 
 nnoremap <F2> :source $HOME/.vimrc<Return>
