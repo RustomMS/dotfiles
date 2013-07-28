@@ -1,2 +1,3 @@
-# My Dotfiles
-- .vimrc
+# Dotfiles
+
+My environment configuration files.
