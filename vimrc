@@ -56,10 +56,11 @@ Bundle 'altercation/vim-colors-solarized'
 " Powerline - improved status line in vim
 Bundle 'Lokaltog/vim-powerline'
 
+let g:Powerline_symbols='fancy'
+
 " Git Fugitive
 Bundle 'tpope/vim-fugitive'
 
-let g:Powerline_symbols='unicode'
 
 " Python IDEish stuff
 " Bundle 'klen/python-mode'
@@ -133,12 +134,12 @@ set noexpandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=8
-set tabstop=8
-set softtabstop=8
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
 " Linebreak on 500 characters
-set lbr
+"set lbr
 set tw=80
 set formatoptions=tcq
 
@@ -163,6 +164,8 @@ nnoremap ,sv :source $HOME/.vimrc<Return>
 nnoremap ,v :tabe $HOME/.vimrc<Return> 
 
 nnoremap ,t :NERDTree<cr>
+nnoremap j gj
+nnoremap k gk
 
 nnoremap <F3> :tabe $HOME/.vimrc<Return> 
 nnoremap <F2> :source $HOME/.vimrc<Return>
