@@ -1,5 +1,18 @@
 [user]
-	name = Rustom Shareef
-	email = rustom.shareef@gmail.com
+    name = Rustom Shareef
+    email = rustom.shareef@gmail.com
+[github]
+    user = rshareef
 [core]
-	editor = vi
+    editor = vi
+	excludesfile = ~/.gitignore
+	autocrlf = input
+	whitespace = trailing-space,space-before-tab
+[color]
+    ui = true
+[help]
+	autocorrect = 1
+[alias]
+    pullr = pull --rebase
+    dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
+    list = show --pretty=format:'' --name-only
