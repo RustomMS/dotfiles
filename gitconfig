@@ -16,3 +16,5 @@
     pullr = pull --rebase
     dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
     list = show --pretty=format:'' --name-only
+[push]
+    default = simple
