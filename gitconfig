@@ -5,13 +5,13 @@
     user = rshareef
 [core]
     editor = vi
-	excludesfile = ~/.gitignore
-	autocrlf = input
-	whitespace = trailing-space,space-before-tab
+    excludesfile = ~/.gitignore
+    autocrlf = input
+    whitespace = trailing-space,tab-in-indent,tabwidth=4
 [color]
     ui = true
 [help]
-	autocorrect = 1
+    autocorrect = 1
 [alias]
     pullr = pull --rebase
     dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
