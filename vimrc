@@ -158,12 +158,14 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap ,w :w<Return>
+nnoremap <leader>w :w<Return>
 
-nnoremap ,sv :source $HOME/.vimrc<Return>
-nnoremap ,v :tabe $HOME/.vimrc<Return> 
+nnoremap <leader>sv :source $HOME/.vimrc<Return>
+nnoremap <leader>v :tabe $HOME/.vimrc<Return> 
+nnoremap <leader>ro :set ro!<Return> 
+nnoremap <leader>p :set wrap!<Return> 
 
-nnoremap ,t :NERDTree<cr>
+nnoremap <leader>t :NERDTree<cr>
 nnoremap j gj
 nnoremap k gk
 
