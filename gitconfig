@@ -4,7 +4,7 @@
 [github]
     user = rshareef
 [core]
-    editor = vi
+    editor = vim
     excludesfile = ~/.gitignore
     autocrlf = input
     whitespace = trailing-space,tab-in-indent,tabwidth=4
