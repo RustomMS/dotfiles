@@ -15,7 +15,7 @@ call vundle#begin()
 " Bundles from Vundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle manager
-Plugin 'gmarik/vundle' 
+Plugin 'gmarik/vundle'
 " NERDTree a file explorer in Vim
 Plugin 'scrooloose/nerdtree'
 
@@ -29,9 +29,19 @@ let g:solarized_visibility=   "high"
 let g:solarized_hitrail = 1
 
 " Powerline - improved status line in vim
-Plugin 'Lokaltog/vim-powerline'
+Plugin 'bling/vim-airline'
+let g:airline_powerline_fonts = 0
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
 
-"let g:Powerline_symbols='fancy'
+" unicode symbols
+let g:airline_left_sep = ' '
+let g:airline_right_sep = ' '
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.whitespace = 'Ξ'
 
 " Git Fugitive
 Plugin 'tpope/vim-fugitive'
@@ -41,6 +51,8 @@ Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex.git'
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
+
+Plugin 'benmills/vimux'
 
 " Python IDEish stuff
 " Plugin 'klen/python-mode'
@@ -154,9 +166,9 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
 
 " Linebreak on 500 characters
 "set lbr
