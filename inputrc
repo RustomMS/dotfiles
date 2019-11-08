@@ -1,0 +1,10 @@
+set editing-mode vi
+set completion-ignore-case On
+set show-all-if-ambiguous On
+set bell-style none
+
+$if mode=vi
+   set keymap vi-insert
+   # remap jk as escape
+   "jk": vi-movement-mode
+$endif
