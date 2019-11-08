@@ -1,74 +1,88 @@
-# ~/.bashrc: executed by bash
+# rustom's bashrc
 
+function nonzero_return
+{
+   RETVAL=$?
+   [ $RETVAL -ne 0 ] && echo " [0;31;7m$RETVAL"
+}
 
-# HISTORY 
-# ============
+function color_my_prompt
+{
+   # Some things should be done only in interactive shells.
+   if [[ "$-" = *i* ]]; then
+      local __nonzero_return='`nonzero_return`'
+      local __user_and_host="\[\033[0;32m\]\u@\h"
+      local __cur_location="\[\033[0;34m\]\w"
+      local __git_branch_color="\[\033[0;31m\]"
+      #local __git_branch="\`ruby -e \"print (%x{git branch 2> /dev/null}.grep(/^\*/).first || '').gsub(/^\* (.+)$/, '(\1) ')\"\`"
+#      local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\(\\\\\1\)\ /`'
+      local __git_branch='`git branch 2>/dev/null | grep '^*' | colrm 1 2`'
+      local __prompt_tail="\[\033[0;32m\]$"
+      local __last_color="\[\033[00m\]"
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-# append to the history file, don't overwrite it
-shopt -s histappend
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+      export PS1="$__user_and_host $__cur_location$__nonzero_return$__git_branch_color $__git_branch\n$__prompt_tail$__last_color "
+   fi
+}
+color_my_prompt
 
+if [[ "$-" = *i* ]]; then
+   #export TERM=xterm
+   #export TERM=xterm-256color
+   #export TERM=screen-256color
 
-# UI and prompt
-# ===========
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+   # History settings
+   export HISTTIMEFORMAT="%y-%m-%d %T "
+   export HISTCONTROL=ignoredups
+   export HISTSIZE=100000
+   export HISTFILESIZE=100000
+   export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+   shopt -s histappend
+   shopt -s cmdhist
+   shopt -s checkwinsize
+   export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color) color_prompt=yes;;
-esac
+   # use github.com/rupa/z for directory history and quick access
+   . $HOME/local/z/z.sh
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
+   # Setup fzf for fuzzy seraching and auto complete
+   [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
+   # ls settings
+   eval `dircolors ~/.dircolors_monokai`
+   export LS_OPTIONS="-N --color=auto -F"
+   export BLOCK_SIZE=human-readable
+
+   # Less Settings
+   #export LESS='--quit-if-one-screen --ignore-case --LONG-PROMPT --RAW-CONTROL-CHARS --tabs=4 --no-init --window=-4'
+   export LESS='--ignore-case --LONG-PROMPT --RAW-CONTROL-CHARS --tabs=4 --window=-4'
+
+   # Have less display colours
+   export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
+   export LESS_TERMCAP_md=$(tput bold; tput setaf 4) # blue
+   export LESS_TERMCAP_me=$(tput sgr0)
+   export LESS_TERMCAP_so=$(tput bold; tput setaf 3) # yellow
+   export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+   export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
+   export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+   export LESS_TERMCAP_mr=$(tput rev)
+   export LESS_TERMCAP_mh=$(tput dim)
+   export LESS_TERMCAP_ZN=$(tput ssubm)
+   export LESS_TERMCAP_ZV=$(tput rsubm)
+   export LESS_TERMCAP_ZO=$(tput ssupm)
+   export LESS_TERMCAP_ZW=$(tput rsupm)
+   export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+# Misc
+export EDITOR=vim
+
+if  [[ -f $HOME/.aliases ]]; then
+   . $HOME/.aliases
 fi
-unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-
-# Aliases
-# =======================
-alias ls='ls -F --color=auto'
-
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+if  [[ -f $HOME/.localrc ]]; then
+   . $HOME/.localrc
+fi
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
