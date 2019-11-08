@@ -1,0 +1,51 @@
+#!/bin/sh
+
+ReplaceAndKeepCopy()
+{
+   newFile=$1
+   origFile=$2
+
+   if [ ! -e $origFile ] 
+   then
+      echo "$origFile not exist"
+      ln -s $newFile $origFile
+   elif [ ! $newFile -ef $origFile ] 
+   then
+      echo "Move and replace $origFile"
+      mv $origFile $origFile.rustom-backup
+      ln -s $newFile $origFile
+   else
+      echo "No action for $newFile"
+   fi
+}
+
+ReplaceAndKeepCopy $HOME/dotfiles/bash_aliases $HOME/.bash_aliases
+ReplaceAndKeepCopy $HOME/dotfiles/bashrc $HOME/.bashrc
+ReplaceAndKeepCopy $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
+ReplaceAndKeepCopy $HOME/dotfiles/vimrc $HOME/.vimrc
+ReplaceAndKeepCopy $HOME/dotfiles/gitconfig $HOME/.gitconfig
+ReplaceAndKeepCopy $HOME/dotfiles/inputrc $HOME/.inputrc
+
+mkdir -p $HOME/.vim/colors
+if [ ! -e $HOME/.vim/colors/gruvbox.vim ] ; then 
+   wget  -P $HOME/.vim/colors/ https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vim
+fi
+if [ ! -e $HOME/.vim/colors/onehalfdark.vim ] ; then 
+   wget  -P $HOME/.vim/colors/ https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalfdark.vim
+fi
+if [ ! -e $HOME/.vim/colors/onehalflight.vim ] ; then 
+   wget  -P $HOME/.vim/colors/ https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
+fi
+
+if [ ! -e $HOME/local/z ] ; then
+   # get z from rupa´s repo and install at ~/local/z
+   mkdir -p $HOME/local/z
+   git clone --depth 1 https://github.com/rupa/z $HOME/local/z
+fi
+
+if [ ! -e $HOME/local/fzf ] ; then
+   # get z from rupa´s repo and install at ~/local/z
+   mkdir -p $HOME/local/fzf
+   git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/local/fzf
+   $HOME/local/fzf/install --no-update-rc --no-zsh --no-fish --completion --key-bindings
+fi
