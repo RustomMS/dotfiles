@@ -76,6 +76,10 @@ fi
 # Misc
 export EDITOR=vim
 
+if  [[ -d $HOME/dotfiles/bin ]]; then
+   export PATH="$PATH:$HOME/dotfiles/bin"
+fi
+
 if  [[ -f $HOME/.aliases ]]; then
    . $HOME/.aliases
 fi

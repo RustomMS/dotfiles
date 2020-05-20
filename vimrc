@@ -176,6 +176,13 @@ autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
 
+if has('TextYankPost')
+   augroup ClipboardSync
+      autocmd!
+      autocmd TextYankPost * call CopyYank()
+   augroup END
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -253,6 +260,10 @@ noremap <leader>d :s/^\([/(]\*\\|<!--\) \(.*\) \(\*[/)]\\|-->\)$/\2/<CR> <Esc>:n
 
 " Delete trailing whitespace
 nnoremap <leader>tw :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+" Yank text and sync to clipboard using OSC 52
+noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function Key Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -413,6 +424,23 @@ function! <SID>StripTrailingWhitespaces()
    let original_cursor = getpos('.')
    exe b:insert_top ',' b:insert_bottom 's/\s\+$//e'
    call setpos('.', original_cursor)
+endfunction
+
+" copy to attached terminal using the yank(1) script:
+" https://github.com/sunaku/home/blob/master/bin/yank
+function! Yank(text) abort
+  let escape = system('yank', a:text)
+  if v:shell_error
+    echoerr escape
+  else
+    call writefile([escape], '/dev/tty', 'b')
+  endif
+endfunction
+
+" automatically run yank(1) whenever yanking in Vim
+" (this snippet was contributed by Larry Sanderson)
+function! CopyYank() abort
+  call Yank(join(v:event.regcontents, "\n"))
 endfunction
 
 " ~/.vimrc ends here
