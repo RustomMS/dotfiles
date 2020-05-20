@@ -8,73 +8,10 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible        " Use gVim defaults
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Bundles from Vundle
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vundle manager
-Plugin 'gmarik/vundle'
-" NERDTree a file explorer in Vim
-Plugin 'scrooloose/nerdtree'
-
-" Solarized colorscheme
-Plugin 'altercation/vim-colors-solarized'
-let g:solarized_termcolors = 16
-let g:solarized_contrast  =   "normal"
-let g:solarized_visibility=   "high"
-let g:solarized_bold = 1
-let g:solarized_underline = 1
-let g:solarized_italics = 1
-"g:solarized_termtrans =   1
-"g:solarized_degrade   =   0       |   1
-let g:solarized_hitrail = 1
-
-" Powerline - improved status line in vim
-Plugin 'bling/vim-airline'
-let g:airline_powerline_fonts = 0
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = ' '
-let g:airline_right_sep = ' '
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" Git Fugitive
-Plugin 'tpope/vim-fugitive'
-
-" LaTeX
-Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex.git'
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor='latex'
-
-
-Plugin 'benmills/vimux'
-
-" Python IDEish stuff
-" Plugin 'klen/python-mode'
-" Load run code plugin
-" let g:pymode_run = 1
-
-" Key for run python code
-" let g:pymode_run_key = '<leader>r'
-
-" Disable pylint checking every save
-" let g:pymode_lint_write = 0
-
-" Set key 'R' for run python code
-" let g:pymode_run_key = 'R'
 
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_bold = 0
 
-call vundle#end()
 filetype plugin on
 filetype indent on
 filetype on
@@ -96,13 +33,6 @@ set hidden              "something about bufers
 let mapleader=","     " makes <leader> comma
 
 set encoding=utf8
-
-if has('gui_running')
-  set guifont=inconsolata:h10
-  set guioptions-=T
-  set guioptions-=l
-  set guioptions-=L
-endif
 
 if exists('+termguicolors')
    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
