@@ -49,3 +49,7 @@ if [ ! -e $HOME/local/fzf ] ; then
    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/local/fzf
    $HOME/local/fzf/install --no-update-rc --no-zsh --no-fish --completion --key-bindings
 fi
+
+if [ ! -e ~/.vim/pack/plugins/start/rust.vim ] ; then
+  git clone --depth 1 https://github.com/rust-lang/rust.vim ~/.vim/pack/plugins/start/rust.vim
+fi
