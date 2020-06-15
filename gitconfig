@@ -1,8 +1,7 @@
 [user]
     name = Rustom Shareef
-    email = rustom.shareef@gmail.com
 [github]
-    user = rshareef
+    user = RustomMS
 [core]
     editor = vim
     excludesfile = ~/.gitignore
@@ -32,7 +31,7 @@
 [commit]
 	verbose = true
 [alias]
-	 wt = worktree
+	  wt = worktree
     co = checkout
     ci = commit
     st = status
