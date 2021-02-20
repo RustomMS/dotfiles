@@ -25,6 +25,7 @@ ReplaceAndKeepCopy $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
 ReplaceAndKeepCopy $HOME/dotfiles/vimrc $HOME/.vimrc
 ReplaceAndKeepCopy $HOME/dotfiles/gitconfig $HOME/.gitconfig
 ReplaceAndKeepCopy $HOME/dotfiles/inputrc $HOME/.inputrc
+ReplaceAndKeepCopy $HOME/dotfiles/dircolors.wsl $HOME/.dircolors.wsl
 
 mkdir -p $HOME/.vim/colors
 if [ ! -e $HOME/.vim/colors/gruvbox.vim ] ; then 

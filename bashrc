@@ -48,7 +48,7 @@ if [[ "$-" = *i* ]]; then
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
    # ls settings
-   eval `dircolors ~/.dircolors_monokai`
+   eval `dircolors ~/.dircolors.wsl`
    export LS_OPTIONS="-N --color=auto -F"
    export BLOCK_SIZE=human-readable
 
