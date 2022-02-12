@@ -3,24 +3,44 @@
 " 2013-01-05
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible        " Use gVim defaults
 filetype off
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin()
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/local/fzf', 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'rust-lang/rust.vim'
+
+" Inline linter and language server integration
+Plug 'dense-analysis/ale'
+
+" Plugin to display git branch
+Plug 'itchyny/vim-gitbranch'
+
+" Plugin to jump language based keywords
+Plug 'andymass/vim-matchup'
+
+" Initialize plugin system
+call plug#end()
+
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_bold = 0
+let g:rustfmt_autosave = 1
 
-filetype plugin on
-filetype indent on
-filetype on
-syntax enable
+let g:ale_linters = {'rust': ['analyzer']}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" UI
+" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+syntax enable
 set history=1000         " # of lines VIM remembers
 set showcmd             " show partial cmds
 "Allows backspacing over eol or indentation
@@ -31,6 +51,10 @@ set nospell             " turn off spell check
 set hidden              "something about bufers
 
 let mapleader=","     " makes <leader> comma
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UI
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set encoding=utf8
 
@@ -54,17 +78,32 @@ endtry
 set background=dark
 set ruler               " Show current position
 set report=0
-set cmdheight=1         " cmd bar height 2 lines
+" Completion
+" Better completion
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
+set completeopt=menuone,noinsert,noselect
+set cmdheight=1         " cmd bar height 1 lines
 set laststatus=2        " always display status line
+set updatetime=300
+
 if &diff
-   set statusline=%f[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%y%r%m%=%c%V,%l/%L\ %P
+   set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m%=%c%V,\ %l/%L\ %P
+   set diffopt+=iwhite
+   set diffopt+=algorithm:patience
+   set diffopt+=indent-heuristic
 else
    "Display only tail of file path
-   set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%y%r%m%=%c%V,%l/%L\ %P
+   set statusline=%t
+   set statusline+=%{GitBranch()}
+   set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
+   set statusline+=%=%{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
+   set relativenumber
    set number           " display line numbers
 endif
-set nostartofline       " When using movement cmds keep cursor at position
 set showmode            " show current mode
+set nostartofline       " When using movement cmds keep cursor at position
 set smartcase           " smart about cases during search
 set hlsearch            " highlight search results
 noh
@@ -72,8 +111,9 @@ set ignorecase          " ignores case during search
 set showmatch           " shows matching set of brackets
 set confirm             " raise dialog during error
                         " when saving files
-set number              " display line numbers
+"set number              " display line numbers
 set cursorline          " shows current line
+set colorcolumn=80
 "set listchars=eol:$,tab:>\ ,trail:.
 set listchars=eol:¬,tab:»\ ,trail:·
 " No annoying sound on errors
@@ -91,6 +131,13 @@ set clipboard^=unnamed,unamedplus
 "set ttyfast
 set tabpagemax=20
 
+" Sane splits
+set splitright
+set splitbelow
+
+" Permanent undo
+set undodir=~/.vimdid
+set undofile
 
 "set tags=
 if has("cscope")
@@ -183,9 +230,17 @@ if has('TextYankPost')
    augroup END
 endif
 
+" Leave paste mode when leaving insert mode
+autocmd InsertLeave * set nopaste
+
+au Filetype rust set colorcolumn=100
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" remap ; to : in normal mode
+nnoremap ; :
+" insert mode make it easy to get to normal
 inoremap jk <Esc>
 nnoremap <leader>ss :set nolist!<Return>
 nnoremap <leader>sc :set nospell!<Return>
@@ -197,6 +252,11 @@ vnoremap <C-h> <C-w>h
 vnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
+
+" Open hotkeys
+map <C-p> :Files<CR>
+nmap <leader>; :Buffers<CR>
+
 
 " In diff mode move windows with C-h and C-l otherwise move tabs
 if &diff
@@ -222,6 +282,13 @@ nnoremap <leader>n :bn<Return>
 nnoremap <leader>p :bp<Return>
 nnoremap <leader>l :b#<Return>
 
+" up and down can switch buffers
+nnoremap <up> :bn<CR>
+nnoremap <down> :bp<CR>
+" Left and right can switch tabs
+nnoremap <left> gT
+nnoremap <right> gt
+
 nnoremap <leader>sv :source $HOME/.vimrc<Return>
 nnoremap <leader>ev :tabe $HOME/.vimrc<Return>
 nnoremap <leader>wp :set wrap!<Return>
@@ -229,7 +296,6 @@ nnoremap <leader>sb :set noscb!<Return>
 nnoremap <leader>m :set nomodifiable!<Return>
 nnoremap <leader>t :tab split<Return>
 noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:set nowrap<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
-"nnoremap <leader>t :NERDTree<cr>
 vnoremap <leader>f y/<C-R>"<CR>
 vnoremap <leader>ff y/\<<C-R>"\><CR>
 
@@ -237,10 +303,6 @@ vnoremap <leader>ff y/\<<C-R>"\><CR>
 "nnoremap <leader>cc :call <SID>ToggleColorColumn74()<cr>
 nnoremap <leader>cc :call <SID>ToggleColorColumn80()<cr>
 
-noremap <leader>im :execute '/eduid\(\_s.*\)\{0,2\}\_index manager'<Return>
-noremap <leader>dm :execute '/eduid\(\_s.*\)\{0,2\}\_data management'<Return>
-
-nnoremap <leader>t :NERDTree<cr>
 nnoremap j gj
 nnoremap k gk
 
@@ -249,9 +311,10 @@ nnoremap <F2> :source $HOME/.vimrc<Return>
 
 " lhs comments -- select a range then hit <leader># to insert hash comments
 " or <leader>/ for // comments, or <leader>c to clear comments.
-noremap <leader># :s/^/#/<CR> <Esc>:nohlsearch <CR>
-noremap <leader>/ :s/^/\/\//<CR> <Esc>:nohlsearch <CR>
-noremap <leader>c :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
+noremap <leader># :s/^\s*/&# /<CR> <Esc>:nohlsearch <CR>
+noremap <leader>/ :s/^\s*/&\/\/ /<CR> <Esc>:nohlsearch <CR>
+noremap <leader>c :s/\(^\s*\)\(\/\/\\|--\\|> \\|[#"%!;]\)\s\?/\1/<CR> <Esc>:nohlsearch<CR>
+
 
 " wrapping comments -- select a range then hit <leader>* to put  /* */ around
 " selection, or <leader>d to clear them
@@ -442,5 +505,45 @@ endfunction
 function! CopyYank() abort
   call Yank(join(v:event.regcontents, "\n"))
 endfunction
+
+function! FileSize() abort
+    let l:bytes = getfsize(expand('%p'))
+    if (l:bytes >= 1024)
+        let l:kbytes = l:bytes / 1025
+    endif
+    if (exists('kbytes') && l:kbytes >= 1000)
+        let l:mbytes = l:kbytes / 1000
+    endif
+
+    if l:bytes <= 0
+        return '0'
+    endif
+
+    if (exists('mbytes'))
+        return l:mbytes . 'MB '
+    elseif (exists('kbytes'))
+        return l:kbytes . 'KB '
+    else
+        return l:bytes . 'B '
+    endif
+endfunction
+
+function! GitBranch() abort
+  let l:gbr=gitbranch#name()
+  if strlen(l:gbr) > 0
+    return ' '. '['.l:gbr.']'
+  else
+    return ''
+endfunction
+
+
+" Put these lines at the very end of your vimrc file.
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL
 
 " ~/.vimrc ends here
