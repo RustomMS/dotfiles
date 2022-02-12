@@ -136,7 +136,10 @@ set splitright
 set splitbelow
 
 " Permanent undo
-set undodir=~/.vimdid
+if !isdirectory($HOME. "/.vim/undo")
+  call mkdir($HOME. "/.vim/undo", "p", 0700)
+endif
+set undodir=~/.vim/undo
 set undofile
 
 "set tags=
