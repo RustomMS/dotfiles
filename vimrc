@@ -3,6 +3,9 @@
 " 2013-01-05
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible        " Use gVim defaults
 filetype off
 
@@ -57,11 +60,22 @@ let mapleader=","     " makes <leader> comma
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set encoding=utf8
+set fileencoding=utf-8
+set termencoding=utf-8
+
+if has('gui_running')
+  set guifont=inconsolata:h10
+  set guioptions-=T
+  set guioptions-=l
+  set guioptions-=L
+endif
 
 if exists('+termguicolors')
    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
    set termguicolors
+else
+   set t_Co=256
 endif
 
 syntax enable " Enable syntax highlighting
@@ -123,8 +137,8 @@ set t_vb=""
 set tm=1000
 set wildmenu
 set wildmode=list:longest
-set scrolloff=7
-set sidescrolloff=15
+set scrolloff=2
+set sidescrolloff=10
 set sidescroll=1
 "set clipboard=unnamed
 set clipboard^=unnamed,unamedplus
@@ -201,14 +215,14 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
 " Linebreak on 500 characters
 "set lbr
 set tw=0
-set formatoptions=tcq
+set formatoptions=tacrnplq
 
 set ai "Auto indent
 set si "Smart indent
@@ -219,8 +233,23 @@ set wrap "Wrap lines
 " Auto commands
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-autocmd BufRead *                             set formatoptions=tcroql nocindent
-autocmd BufRead *.C,*.c,*.cpp,*.h,            set formatoptions=croql  cindent   comments=sr:/*,mb:*,el:*/,://
+" Markdown settings
+"au FileType markdown setlocal textwidth=0 formatoptions=aqnlw spell
+au FileType markdown setlocal spell
+let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml', 'db2diaglog']
+let g:markdown_minlines = 500
+au CursorHold,CursorHoldI *.md :checktime
+au FocusGained,BufEnter *.md :checktime
+autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+
+"Asciidoc settings
+"au FileType asciidoc setlocal spell textwidth=0 formatoptions=aqnlw
+au FileType asciidoc setlocal spell
+au CursorHold,CursorHoldI *.asciidoc *.adoc :checktime
+au FocusGained,BufEnter *.asciidoc *.adoc :checktime
+autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
+
+autocmd BufRead *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
@@ -236,6 +265,7 @@ endif
 " Leave paste mode when leaving insert mode
 autocmd InsertLeave * set nopaste
 
+" Rust settings
 au Filetype rust set colorcolumn=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -260,6 +290,8 @@ nnoremap <C-k> <C-w>k
 map <C-p> :Files<CR>
 nmap <leader>; :Buffers<CR>
 
+" Paste mode toggle
+set pastetoggle=<C-P>
 
 " In diff mode move windows with C-h and C-l otherwise move tabs
 if &diff
@@ -298,9 +330,13 @@ nnoremap <leader>wp :set wrap!<Return>
 nnoremap <leader>sb :set noscb!<Return>
 nnoremap <leader>m :set nomodifiable!<Return>
 nnoremap <leader>t :tab split<Return>
+nnoremap <leader>fd :set foldmethod=syntax<Return>
 noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:set nowrap<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
 vnoremap <leader>f y/<C-R>"<CR>
 vnoremap <leader>ff y/\<<C-R>"\><CR>
+noremap <leader>pf :call Yank(expand("%:p"))<CR>
+noremap <leader>ph :call Yank(expand("%:h"))<CR>
+noremap <leader>pt :call Yank(expand("%:t"))<CR>
 
 " Press <leader>cc to toggle color column
 "nnoremap <leader>cc :call <SID>ToggleColorColumn74()<cr>
@@ -318,7 +354,6 @@ noremap <leader># :s/^\s*/&# /<CR> <Esc>:nohlsearch <CR>
 noremap <leader>/ :s/^\s*/&\/\/ /<CR> <Esc>:nohlsearch <CR>
 noremap <leader>c :s/\(^\s*\)\(\/\/\\|--\\|> \\|[#"%!;]\)\s\?/\1/<CR> <Esc>:nohlsearch<CR>
 
-
 " wrapping comments -- select a range then hit <leader>* to put  /* */ around
 " selection, or <leader>d to clear them
 noremap <leader>* :s/^\(.*\)$/\/\* \1 \*\//<CR> <Esc>:nohlsearch<CR>
@@ -330,13 +365,6 @@ nnoremap <leader>tw :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <
 " Yank text and sync to clipboard using OSC 52
 noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Function Key Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"75 Test line -------------------------------------------------------------
-"81 Test line -------------------------------------------------------------------
-"121 Test line ----------------------------------------------------------------------------------------------------------
-"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
@@ -352,6 +380,14 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Function Key Mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"75 Test line -------------------------------------------------------------
+"81 Test line -------------------------------------------------------------------
+"121 Test line ----------------------------------------------------------------------------------------------------------
+
+"Custom colour column functions
 let s:color_column = 0
 
 "toggle color text for charters above column 74
@@ -413,7 +449,6 @@ function! SummarizeTabs()
     echohl None
   endtry
 endfunction
-
 
 function! Tab_Or_Complete()
    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
