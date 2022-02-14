@@ -17,19 +17,24 @@ call plug#begin()
 Plug 'junegunn/vim-easy-align'
 
 " Plugin outside ~/.vim/plugged with post-update hook
-Plug 'junegunn/fzf', { 'dir': '~/local/fzf', 'do': { -> fzf#install() } }
+" Not needed since we can just use setup script to update
+" Plug 'junegunn/fzf', { 'dir': '~/local/fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'rust-lang/rust.vim'
 
 " Inline linter and language server integration
-Plug 'dense-analysis/ale'
+if v:version >= 800
+    Plug 'dense-analysis/ale'
+endif
 
 " Plugin to display git branch
 Plug 'itchyny/vim-gitbranch'
 
 " Plugin to jump language based keywords
-Plug 'andymass/vim-matchup'
+if v:version >= 704
+    Plug 'andymass/vim-matchup'
+endif
 
 " Initialize plugin system
 call plug#end()
@@ -97,7 +102,11 @@ set report=0
 " menuone: popup even when there's only one match
 " noinsert: Do not insert text until a selection is made
 " noselect: Do not select, force user to select one from the menu
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone
+if v:version >= 705
+    set completeopt+=noinsert
+    set completeopt+=noselect
+endif
 set cmdheight=1         " cmd bar height 1 lines
 set laststatus=2        " always display status line
 set updatetime=300
@@ -113,7 +122,9 @@ else
    set statusline+=%{GitBranch()}
    set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
    set statusline+=%=%{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
+   if exists('+relativenumber')
    set relativenumber
+   endif
    set number           " display line numbers
 endif
 set showmode            " show current mode
@@ -127,7 +138,9 @@ set confirm             " raise dialog during error
                         " when saving files
 "set number              " display line numbers
 set cursorline          " shows current line
-set colorcolumn=80
+if exists('+colorcolumn')
+    set colorcolumn=80
+endif
 "set listchars=eol:$,tab:>\ ,trail:.
 set listchars=eol:¬,tab:»\ ,trail:·
 " No annoying sound on errors
@@ -150,12 +163,15 @@ set splitright
 set splitbelow
 
 " Permanent undo
-if !isdirectory($HOME. "/.vim/undo")
+if exists('+undodir')
+    if !isdirectory($HOME. "/.vim/undo")
   call mkdir($HOME. "/.vim/undo", "p", 0700)
+    endif
+    set undodir=~/.vim/undo
+    set undofile
 endif
-set undodir=~/.vim/undo
-set undofile
 
+" Cscope Setup
 "set tags=
 if has("cscope")
    "set csprg=
@@ -222,7 +238,7 @@ set softtabstop=4
 " Linebreak on 500 characters
 "set lbr
 set tw=0
-set formatoptions=tacrnplq
+set formatoptions=tcrnlq
 
 set ai "Auto indent
 set si "Smart indent
@@ -574,14 +590,15 @@ function! GitBranch() abort
     return ''
 endfunction
 
+if v:version >= 800
+    " Put these lines at the very end of your vimrc file.
 
-" Put these lines at the very end of your vimrc file.
-
-" Load all plugins now.
-" Plugins need to be added to runtimepath before helptags can be generated.
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-" All messages and errors will be ignored.
-silent! helptags ALL
+    " Load all plugins now.
+    " Plugins need to be added to runtimepath before helptags can be generated.
+    packloadall
+    " Load all of the helptags now, after plugins have been loaded.
+    " All messages and errors will be ignored.
+    silent! helptags ALL
+endif
 
 " ~/.vimrc ends here
