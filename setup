@@ -2,20 +2,30 @@
 
 ReplaceAndKeepCopy()
 {
-  newFile=$1
-  origFile=$2
+   local newFile=$1
+   local origFile=$2
+
+   # Determine the relative path to newFile from origFile's directory
+   common_part=$(dirname $origFile)
+   back=""
+   while [ "${newFile#$common_part}" = "${newFile}" ]; do
+      common_part=$(dirname $common_part)
+      back="../${back}"
+   done
+
+   local symSource=${back}${newFile#$common_part/}
 
   if [ ! -e $origFile ]
   then
     echo "$origFile not exist"
-    ln -s $newFile $origFile
+      ln -f -s $symSource $origFile
   elif [ ! $newFile -ef $origFile ]
   then
-    echo "Move and replace $origFile"
+      echo "Move and replace $origFile with $newFile"
     mv $origFile $origFile.rustom-backup
-    ln -s $newFile $origFile
+      ln -s $symSource $origFile
   else
-    echo "No action for $newFile"
+      echo "No action for $origFile and $newFile"
   fi
 }
 
@@ -25,7 +35,9 @@ ReplaceAndKeepCopy $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
 ReplaceAndKeepCopy $HOME/dotfiles/vimrc $HOME/.vimrc
 ReplaceAndKeepCopy $HOME/dotfiles/gitconfig $HOME/.gitconfig
 ReplaceAndKeepCopy $HOME/dotfiles/inputrc $HOME/.inputrc
-ReplaceAndKeepCopy $HOME/dotfiles/dircolors.wsl $HOME/.dircolors.wsl
+ReplaceAndKeepCopy $HOME/dotfiles/sshConfig $HOME/.ssh/config
+chmod 600 $HOME/dotfiles/sshConfig
+mkdir -p $HOME/.vim/syntax
 
 mkdir -p $HOME/.vim/colors
 if [ ! -e $HOME/.vim/colors/gruvbox.vim ] ; then
@@ -38,14 +50,21 @@ if [ ! -e $HOME/.vim/colors/onehalflight.vim ] ; then
   wget  -P $HOME/.vim/colors/ https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
 fi
 
+if [ ! -e $HOME/local ] ; then
+   mkdir -p $HOME/local
+fi
+
+if [ ! -e $HOME/.local ] ; then
+    ln -s $HOME/local $HOME/.local
+fi
+
 if [ ! -e $HOME/local/z ] ; then
-  # get z from rupa´s repo and install at ~/local/z
+   # get z from rupa´s repo and install at $HOME/local/z
   mkdir -p $HOME/local/z
   git clone --depth 1 https://github.com/rupa/z $HOME/local/z
 fi
 
 if [ ! -e $HOME/local/fzf ] ; then
-  # get z from rupa´s repo and install at ~/local/z
   mkdir -p $HOME/local/fzf
   git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/local/fzf
   $HOME/local/fzf/install --no-update-rc --no-zsh --no-fish --completion --key-bindings
