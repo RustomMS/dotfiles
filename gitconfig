@@ -26,6 +26,7 @@
 	prune = true
 [diff]
 	mnemonicprefix = true
+    tool = vimdiff
 [status]
 #	showUntrackedFiles = no
 	relativePaths = true
@@ -34,14 +35,32 @@
 [alias]
 	  wt = worktree
     co = checkout
+    nohook = -c core.hooksPath=/dev/null checkout
     ci = commit
     st = status
     br = branch
+    last = log -1 HEAD
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     sparse-file = rev-parse --git-path info/sparse-checkout
     sparse-dir = rev-parse --git-path info
+    top = rev-parse --show-toplevel
     type = cat-file -t
     dump = cat-file -p
+    wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+    amend = commit --amend
+    d = diff
+    ds = diff --staged
     pullr = pull --rebase
     dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
     list = show --pretty=format:'' --name-only
+    extend = commit --amend -C HEAD
+    f = fetch
+    loll = log --graph --decorate --pretty=oneline --abbrev-commit
+    one = log --pretty=oneline
+    files = log --pretty=oneline --stat
+    outstanding = rebase -i @{u}
+    reword = commit --amend --only
+    s = status
+    zap = fetch -p
+    day = log --reverse --no-merges --branches=* --date=local --since=midnight --author=\"$(git config --get user.name)\"
+    delete-merged-branches = "!f() { git checkout --quiet main && git branch --merged | grep --invert-match '\\*' | xargs -n 1 git branch --delete; git checkout --quiet @{-1}; }; f"
