@@ -252,7 +252,7 @@ set wrap "Wrap lines
 " Markdown settings
 "au FileType markdown setlocal textwidth=0 formatoptions=aqnlw spell
 au FileType markdown setlocal spell
-let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml', 'db2diaglog']
+let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 let g:markdown_minlines = 500
 au CursorHold,CursorHoldI *.md :checktime
 au FocusGained,BufEnter *.md :checktime
