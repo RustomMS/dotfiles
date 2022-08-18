@@ -271,12 +271,12 @@ autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
 
-if has('TextYankPost')
-   augroup ClipboardSync
-      autocmd!
-      autocmd TextYankPost * call CopyYank()
-   augroup END
-endif
+" if has('TextYankPost')
+"    augroup ClipboardSync
+"       autocmd!
+"       autocmd TextYankPost * call CopyYank()
+"    augroup END
+" endif
 
 " Leave paste mode when leaving insert mode
 autocmd InsertLeave * set nopaste
@@ -583,11 +583,16 @@ function! FileSize() abort
 endfunction
 
 function! GitBranch() abort
-  let l:gbr=gitbranch#name()
-  if strlen(l:gbr) > 0
-    return ' '. '['.l:gbr.']'
-  else
-    return ''
+    if exists('gitbranch#name()')
+        let l:gbr=gitbranch#name()
+    else
+        let l:gbr=''
+    endif
+    if strlen(l:gbr) > 0
+        return ' '. '['.l:gbr.']'
+    else
+        return ''
+    endif
 endfunction
 
 if v:version >= 800
