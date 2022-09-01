@@ -33,6 +33,10 @@ if  [[ -d $HOME/dotfiles/bin ]]; then
    export PATH="$PATH:$HOME/dotfiles/bin"
 fi
 
+if  [[ -d $HOME/local/bin ]]; then
+   export PATH="$PATH:$HOME/local/bin"
+fi
+
 if  [[ -f $HOME/.aliases ]]; then
    . $HOME/.aliases
 fi
