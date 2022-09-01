@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # rustom's bashrc
 
 function nonzero_return
@@ -25,6 +26,33 @@ function color_my_prompt
 }
 color_my_prompt
 
+# Misc
+export EDITOR=vim
+
+if  [[ -d $HOME/dotfiles/bin ]]; then
+   export PATH="$PATH:$HOME/dotfiles/bin"
+fi
+
+if  [[ -f $HOME/.aliases ]]; then
+   . $HOME/.aliases
+fi
+
+if  [[ -f $HOME/dotfiles/bashrc.$HOSTNAME ]]; then
+   . $HOME/dotfiles/bashrc.$HOSTNAME
+fi
+
+if  [[ -f $HOME/.localrc ]]; then
+   . $HOME/.localrc
+fi
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+if  [[ -f "$HOME/.cargo/env" ]]; then
+    . "$HOME/.cargo/env"
+fi
+
 if [[ "$-" = *i* ]]; then
    #export TERM=xterm
    #export TERM=xterm-256color
@@ -48,8 +76,8 @@ if [[ "$-" = *i* ]]; then
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
    # ls settings
-   eval `dircolors ~/.dircolors.wsl`
-   export LS_OPTIONS="-N --color=auto -F"
+   [ -f ~/dotfiles/dircolors.wsl ] && eval `dircolors ~/dotfiles/dircolors.wsl`
+   export LS_OPTIONS="--color=auto -F"
    export BLOCK_SIZE=human-readable
 
    # Less Settings
@@ -72,24 +100,3 @@ if [[ "$-" = *i* ]]; then
    export LESS_TERMCAP_ZW=$(tput rsupm)
    export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
 fi
-
-# Misc
-export EDITOR=vim
-
-if  [[ -d $HOME/dotfiles/bin ]]; then
-   export PATH="$PATH:$HOME/dotfiles/bin"
-fi
-
-if  [[ -f $HOME/.aliases ]]; then
-   . $HOME/.aliases
-fi
-
-if  [[ -f $HOME/.localrc ]]; then
-   . $HOME/.localrc
-fi
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-. "$HOME/.cargo/env"
