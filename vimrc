@@ -24,9 +24,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
 
 " Inline linter and language server integration
-if v:version >= 800
-    Plug 'dense-analysis/ale'
-endif
+" if v:version >= 800
+"     Plug 'dense-analysis/ale'
+" endif
 
 " Plugin to display git branch
 Plug 'itchyny/vim-gitbranch'
@@ -36,14 +36,18 @@ if v:version >= 704
     Plug 'andymass/vim-matchup'
 endif
 
+" Use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh']
+
 " Initialize plugin system
 call plug#end()
 
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_bold = 0
-let g:rustfmt_autosave = 1
+" let g:rustfmt_autosave = 1
 
-let g:ale_linters = {'rust': ['analyzer']}
+" let g:ale_linters = {'rust': ['analyzer']}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -307,7 +311,7 @@ map <C-p> :Files<CR>
 nmap <leader>; :Buffers<CR>
 
 " Paste mode toggle
-set pastetoggle=<C-P>
+set pastetoggle=<C-T>
 
 " In diff mode move windows with C-h and C-l otherwise move tabs
 if &diff
@@ -393,8 +397,8 @@ function! InsertTabWrapper()
       return "\<c-p>"
    endif
 endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+"inoremap <expr> <tab> InsertTabWrapper()
+"inoremap <s-tab> <c-n>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function Key Mappings
@@ -465,61 +469,6 @@ function! SummarizeTabs()
     echohl None
   endtry
 endfunction
-
-function! Tab_Or_Complete()
-   if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-      return "\<C-N>"
-   else
-      return "\<Tab>"
-   endif
-endfunction
-inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
-
-set dictionary="/usr/dict/words"
-set completeopt=longest,menuone
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-         \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-         \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-" " open omni completion menu closing previous if open and opening new menu without changing the text
-" inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-"          \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-" " open user completion menu closing previous if open and opening new menu without changing the text
-" inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-"          \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-" Change color of the auto complete
-highlight Pmenu ctermbg=white ctermfg=black
-
-
-function! Tabline()
-  let s = ''
-  for i in range(tabpagenr('$'))
-    let tab = i + 1
-    let winnr = tabpagewinnr(tab)
-    let buflist = tabpagebuflist(tab)
-    let bufnr = buflist[winnr - 1]
-    let bufname = bufname(bufnr)
-    let bufmodified = getbufvar(bufnr, "&mod")
-
-    let s .= '%' . tab . 'T'
-    let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-    let s .= ' ' . tab .':'
-    let s .= (bufname != '' ? '['. fnamemodify(bufname, ':t') . '] ' : '[No Name] ')
-
-    if bufmodified
-      let s .= '[+] '
-    endif
-  endfor
-
-  let s .= '%#TabLineFill#'
-  if (exists("g:tablineclosebutton"))
-    let s .= '%=%999XX'
-  endif
-  return s
-endfunction
-"set tabline=%!Tabline()
 
 "https://stackoverflow.com/a/30549330
 function! <SID>SetupTrailingWhitespaces()
