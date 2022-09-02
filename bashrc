@@ -17,7 +17,7 @@ function color_my_prompt
       local __git_branch_color="\[\033[0;31m\]"
       #local __git_branch="\`ruby -e \"print (%x{git branch 2> /dev/null}.grep(/^\*/).first || '').gsub(/^\* (.+)$/, '(\1) ')\"\`"
 #      local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\(\\\\\1\)\ /`'
-      local __git_branch='`git branch 2>/dev/null | grep '^*' | colrm 1 2`'
+      local __git_branch='`git branch 2>/dev/null | grep "^*" | colrm 1 2`'
       local __prompt_tail="\[\033[0;32m\]$"
       local __last_color="\[\033[00m\]"
 
@@ -38,19 +38,19 @@ if  [[ -d $HOME/local/bin ]]; then
 fi
 
 if  [[ -f $HOME/.aliases ]]; then
-   . $HOME/.aliases
+   . "$HOME/.aliases"
 fi
 
 if  [[ -f $HOME/dotfiles/bashrc.$HOSTNAME ]]; then
-   . $HOME/dotfiles/bashrc.$HOSTNAME
+   . "$HOME/dotfiles/bashrc.$HOSTNAME"
 fi
 
 if  [[ -f $HOME/.localrc ]]; then
-   . $HOME/.localrc
+   . "$HOME/.localrc"
 fi
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    . "$HOME/.bash_aliases"
 fi
 
 if  [[ -f "$HOME/.cargo/env" ]]; then
@@ -74,13 +74,13 @@ if [[ "$-" = *i* ]]; then
    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
    # use github.com/rupa/z for directory history and quick access
-   . $HOME/local/z/z.sh
+   . "$HOME/local/z/z.sh"
 
    # Setup fzf for fuzzy seraching and auto complete
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
    # ls settings
-   [ -f ~/dotfiles/dircolors.wsl ] && eval `dircolors ~/dotfiles/dircolors.wsl`
+   [ -f ~/dotfiles/dircolors.wsl ] && eval "$(dircolors ~/dotfiles/dircolors.wsl)"
    export LS_OPTIONS="--color=auto -F"
    export BLOCK_SIZE=human-readable
 
