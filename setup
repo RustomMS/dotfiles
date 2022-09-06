@@ -1,32 +1,35 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ReplaceAndKeepCopy()
 {
-   newFile=$1
-   origFile=$2
+    newFile=$1
+    origFile=$2
 
    # Determine the relative path to newFile from origFile's directory
-   common_part=$(dirname "$origFile")
+   common_part="$(dirname "$origFile")/"
    back=""
    while [ "${newFile#"$common_part"}" = "${newFile}" ]; do
-      common_part=$(dirname "$common_part")
-      back="../${back}"
+       common_part=$(dirname "$common_part")
+       back="../${back}"
    done
 
-   symSource=${back}${newFile#"$common_part"}
+   symSource="${back}${newFile#"$common_part"}"
 
-  if [ ! -e "$origFile" ]
-  then
-    echo "$origFile not exist"
-      ln -f -s "$symSource" "$origFile"
-  elif [ ! "$newFile" -ef "$origFile" ]
-  then
-      echo "Move and replace $origFile with $newFile"
-    mv "$origFile" "$origFile.rustom-backup"
-      ln -s "$symSource" "$origFile"
-  else
-      echo "No action for $origFile and $newFile"
-  fi
+   if [ ! -e "$origFile" ]
+   then
+       echo "$origFile not exist"
+       ln -f -s "$symSource" "$origFile"
+       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
+   elif [ ! "$newFile" -ef "$origFile" ]
+   then
+       echo "Move and replace $origFile with $newFile"
+       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
+       mv "$origFile" "$origFile.rustom-backup"
+       ln -s "$symSource" "$origFile"
+   else
+       echo "No action for $origFile and $newFile"
+       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
+   fi
 }
 
 ReplaceAndKeepCopy "$HOME/dotfiles/bash_aliases" "$HOME/.bash_aliases"
@@ -41,17 +44,17 @@ mkdir -p "$HOME/.vim/syntax"
 
 mkdir -p "$HOME/.vim/colors"
 if [ ! -e "$HOME/.vim/colors/gruvbox.vim" ] ; then
-  wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vim
+    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vim
 fi
 if [ ! -e "$HOME/.vim/colors/onehalfdark.vim" ] ; then
-  wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalfdark.vim
+    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalfdark.vim
 fi
 if [ ! -e "$HOME/.vim/colors/onehalflight.vim" ] ; then
-  wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
+    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
 fi
 
 if [ ! -e "$HOME/local" ] ; then
-   mkdir -p "$HOME/local"
+    mkdir -p "$HOME/local"
 fi
 
 if [ ! -e "$HOME/.local" ] ; then
@@ -59,18 +62,18 @@ if [ ! -e "$HOME/.local" ] ; then
 fi
 
 if [ ! -e "$HOME/local/z" ] ; then
-   # get z from rupa´s repo and install at "$HOME/local/z"
-  mkdir -p "$HOME/local/z"
-  git clone --depth 1 https://github.com/rupa/z "$HOME/local/z"
+    # get z from rupa´s repo and install at "$HOME/local/z"
+    mkdir -p "$HOME/local/z"
+    git clone --depth 1 https://github.com/rupa/z "$HOME/local/z"
 fi
 
 if [ ! -e "$HOME/local/fzf" ] ; then
-  mkdir -p "$HOME/local/fzf"
-  git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/local/fzf"
-  "$HOME/local/fzf/install" --no-update-rc --no-zsh --no-fish --completion --key-bindings
+    mkdir -p "$HOME/local/fzf"
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/local/fzf"
+    "$HOME/local/fzf/install" --no-update-rc --no-zsh --no-fish --completion --key-bindings
 fi
 
 if [ ! -e ~/.vim/autoload/plug.vim ] ; then
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
