@@ -406,45 +406,6 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function Key Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"75 Test line -------------------------------------------------------------
-"81 Test line -------------------------------------------------------------------
-"121 Test line ----------------------------------------------------------------------------------------------------------
-
-"Custom colour column functions
-let s:color_column = 0
-
-"toggle color text for charters above column 74
-function! s:ToggleColorColumn74()
-   if s:color_column != 1
-      let s:color_column = 1
-      match none
-      2match none
-      highlight OverLength74 ctermbg=green ctermfg=white guibg=#592929
-      match OverLength74 /\%75v.\+/
-      highlight OverLength80 ctermbg=red ctermfg=white guibg=#592929
-      2match OverLength80 /\%81v.\+/
-   else
-      let s:color_column = 0
-      match none
-      2match none
-   endif
-endfunction
-
-"toggle color text for charters above column 80
-function! s:ToggleColorColumn80()
-   if s:color_column != 2
-      let s:color_column = 2
-      highlight OverLength80 ctermbg=red ctermfg=white guibg=#592929
-      match OverLength80 /\%81v.\+/
-      highlight OverLength120 ctermbg=blue ctermfg=white guibg=#592929
-      2match OverLength120 /\%121v.\+/
-   else
-      let s:color_column = 0
-      match none
-      2match none
-   endif
-endfunction
-
 " Set tabstop, softtabstop and shiftwidth to the same value
 command! -nargs=* Stab call Stab()
 function! Stab()
