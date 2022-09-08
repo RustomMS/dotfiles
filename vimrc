@@ -51,7 +51,7 @@ call plug#end()
 " let g:airline_theme='gruvbox'
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_bold = 0
-" let g:rustfmt_autosave = 1
+let g:rustfmt_autosave = 1
 
 " let g:ale_linters = {'rust': ['analyzer']}
 
