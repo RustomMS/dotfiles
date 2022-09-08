@@ -24,6 +24,10 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'rust-lang/rust.vim'
 
+" Airline
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+
 " Inline linter and language server integration
 " if v:version >= 800
 "     Plug 'dense-analysis/ale'
@@ -44,6 +48,7 @@ let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh']
 " Initialize plugin system
 call plug#end()
 
+" let g:airline_theme='gruvbox'
 let g:gruvbox_contrast_dark = "medium"
 let g:gruvbox_bold = 0
 " let g:rustfmt_autosave = 1
