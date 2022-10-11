@@ -1,6 +1,6 @@
 [user]
 	name = Rustom Shareef
-   email = rustom.shareef@gmail.com
+	email = rustom.shareef@gmail.com
 [github]
 	user = RustomMS
 [core]
@@ -28,7 +28,6 @@
 	mnemonicprefix = true
 	tool = vimdiff
 [status]
-#	showUntrackedFiles = no
 	relativePaths = true
 [commit]
 	verbose = true
@@ -64,3 +63,7 @@
 	zap = fetch -p
 	day = log --reverse --no-merges --branches=* --date=local --since=midnight --author=\"$(git config --get user.name)\"
 	delete-merged-branches = "!f() { git checkout --quiet main && git branch --merged | grep --invert-match '\\*' | xargs -n 1 git branch --delete; git checkout --quiet @{-1}; }; f"
+	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git switch pr/$1; }; f"
+	pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+	save = "!git add -A && git commit -m 'chore: commit save point'"
+
