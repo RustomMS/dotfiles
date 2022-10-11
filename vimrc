@@ -130,10 +130,15 @@ if &diff
    set diffopt+=indent-heuristic
 else
    "Display only tail of file path
-   set statusline=%t
+   set statusline=\|
+   set statusline+=\ %t
    set statusline+=%{GitBranch()}
    set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
-   set statusline+=%=%{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
+   set statusline+=\ \|
+   set statusline+=%=
+   set statusline+=\ \|
+   set statusline+=\ %{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
+   set statusline+=\ \|
    if exists('+relativenumber')
    set relativenumber
    endif
@@ -279,6 +284,8 @@ autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype
 
 autocmd BufRead *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
+let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
