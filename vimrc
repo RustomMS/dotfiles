@@ -79,29 +79,29 @@ set fileencoding=utf-8
 set termencoding=utf-8
 
 if has('gui_running')
-  set guifont=inconsolata:h10
-  set guioptions-=T
-  set guioptions-=l
-  set guioptions-=L
+    set guifont=inconsolata:h10
+    set guioptions-=T
+    set guioptions-=l
+    set guioptions-=L
 endif
 
 if exists('+termguicolors')
-   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-   set termguicolors
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
 else
-   set t_Co=256
+    set t_Co=256
 endif
 
 syntax enable " Enable syntax highlighting
 set background=dark
 try
-   colorscheme gruvbox
+    colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
-   try
-      colorscheme desert
-   catch /^Vim\%((\a\+)\)\=:E185/
-   endtry
+    try
+        colorscheme desert
+    catch /^Vim\%((\a\+)\)\=:E185/
+    endtry
 endtry
 
 set background=dark
@@ -124,28 +124,28 @@ set updatetime=300
 " To keep coc sign number always there
 " set signnumber=yes
 if &diff
-   set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m%=%c%V,\ %l/%L\ %P
-   set diffopt+=iwhite
-   set diffopt+=algorithm:patience
-   set diffopt+=indent-heuristic
+    set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m%=%c%V,\ %l/%L\ %P
+    set diffopt+=iwhite
+    set diffopt+=algorithm:patience
+    set diffopt+=indent-heuristic
 else
-   "Display only tail of file path
-   set statusline=\|
-   set statusline+=\ %t
-   set statusline+=%{GitBranch()}
-   set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
-   set statusline+=\ \|
-   set statusline+=%=
-   set statusline+=\ \|
-   set statusline+=\ %{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
-   set statusline+=\ \|
-   if exists('+relativenumber')
-       set relativenumber
-       nnoremap <leader>nu :set number!<CR>:set relativenumber!<CR>
-   else
-       nnoremap <leader>nu :set number!<CR>
-   endif
-   set number           " display line numbers
+    "Display only tail of file path
+    set statusline=\|
+    set statusline+=\ %t
+    set statusline+=%{GitBranch()}
+    set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
+    set statusline+=\ \|
+    set statusline+=%=
+    set statusline+=\ \|
+    set statusline+=\ %{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
+    set statusline+=\ \|
+    if exists('+relativenumber')
+        set relativenumber
+        nnoremap <leader>nu :set number!<CR>:set relativenumber!<CR>
+    else
+        nnoremap <leader>nu :set number!<CR>
+    endif
+    set number           " display line numbers
 endif
 set showmode            " show current mode
 set nostartofline       " When using movement cmds keep cursor at position
@@ -155,7 +155,8 @@ noh
 set ignorecase          " ignores case during search
 set showmatch           " shows matching set of brackets
 set confirm             " raise dialog during error
-                        " when saving files
+
+" when saving files
 "set number              " display line numbers
 set cursorline          " shows current line
 if exists('+colorcolumn')
@@ -185,7 +186,7 @@ set splitbelow
 " Permanent undo
 if exists('+undodir')
     if !isdirectory($HOME. "/.vim/undo")
-  call mkdir($HOME. "/.vim/undo", "p", 0700)
+        call mkdir($HOME. "/.vim/undo", "p", 0700)
     endif
     set undodir=~/.vim/undo
     set undofile
@@ -194,22 +195,22 @@ endif
 " Cscope Setup
 "set tags=
 if has("cscope")
-   "set csprg=
-   set cscopetag
-   set csto=0
-   set cst
-   set nocsverb
+    "set csprg=
+    set cscopetag
+    set csto=0
+    set cst
+    set nocsverb
 
-   " add any database in current directory
-   if filereadable("cscope.out")
-      cs add cscope.out
-      " else add database pointed to by environment
-   elseif $CSCOPE_DB != ""
-      cs add $CSCOPE_DB
-   endif
-   set csverb
-   set cscopepathcomp=3
-   "set cscopequickfix=s-,c-,d-,i-,t-,e-
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+    set cscopepathcomp=3
+    "set cscopequickfix=s-,c-,d-,i-,t-,e-
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
     " the new window.
@@ -227,7 +228,7 @@ if has("cscope")
     nnoremap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nnoremap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR> s
 else
-   echo "no cscope"
+    echo "no cscope"
 endif
 
 "set lazyredraw
@@ -333,13 +334,13 @@ set pastetoggle=<C-T>
 
 " In diff mode move windows with C-h and C-l otherwise move tabs
 if &diff
-   nnoremap <leader>iw :set diffopt+=iwhite<Return>
-   nnoremap <leader>sw :set diffopt-=iwhite<Return>
-   nnoremap <C-h> <C-w>h
-   nnoremap <C-l> <C-w>l
+    nnoremap <leader>iw :set diffopt+=iwhite<Return>
+    nnoremap <leader>sw :set diffopt-=iwhite<Return>
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-l> <C-w>l
 else
-   nnoremap <C-h> gT
-   nnoremap <C-l> gt
+    nnoremap <C-h> gT
+    nnoremap <C-l> gt
 endif
 
 nnoremap <leader>w :w<Return>
@@ -407,12 +408,12 @@ noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! InsertTabWrapper()
-   let col = col('.') - 1
-   if !col || getline('.')[col - 1] !~ '\k'
-      return "\<tab>"
-   else
-      return "\<c-p>"
-   endif
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
 endfunction
 "inoremap <expr> <tab> InsertTabWrapper()
 "inoremap <s-tab> <c-n>
@@ -423,68 +424,68 @@ endfunction
 " Set tabstop, softtabstop and shiftwidth to the same value
 command! -nargs=* Stab call Stab()
 function! Stab()
-  let l:tabstop = 1 * input('set tabstop = softtabstop = shiftwidth = ')
-  if l:tabstop > 0
-    let &l:sts = l:tabstop
-    let &l:ts = l:tabstop
-    let &l:sw = l:tabstop
-  endif
-  call SummarizeTabs()
+    let l:tabstop = 1 * input('set tabstop = softtabstop = shiftwidth = ')
+    if l:tabstop > 0
+        let &l:sts = l:tabstop
+        let &l:ts = l:tabstop
+        let &l:sw = l:tabstop
+    endif
+    call SummarizeTabs()
 endfunction
 
 function! SummarizeTabs()
-  try
-    echohl ModeMsg
-    echon 'tabstop='.&l:ts
-    echon ' shiftwidth='.&l:sw
-    echon ' softtabstop='.&l:sts
-    if &l:et
-      echon ' expandtab'
-    else
-      echon ' noexpandtab'
-    endif
-  finally
-    echohl None
-  endtry
+    try
+        echohl ModeMsg
+        echon 'tabstop='.&l:ts
+        echon ' shiftwidth='.&l:sw
+        echon ' softtabstop='.&l:sts
+        if &l:et
+            echon ' expandtab'
+        else
+            echon ' noexpandtab'
+        endif
+    finally
+        echohl None
+    endtry
 endfunction
 
 "https://stackoverflow.com/a/30549330
 function! <SID>SetupTrailingWhitespaces()
-   let curline = line('.')
-   let b:insert_top = curline
-   let b:insert_bottom = curline
+    let curline = line('.')
+    let b:insert_top = curline
+    let b:insert_bottom = curline
 endfunction
 
 function! <SID>UpdateTrailingWhitespace()
-   let curline = line('.')
-   if b:insert_top > curline
-      let b:insert_top = curline
-   elseif b:insert_bottom < curline
-      let b:insert_bottom = curline
-   endif
+    let curline = line('.')
+    if b:insert_top > curline
+        let b:insert_top = curline
+    elseif b:insert_bottom < curline
+        let b:insert_bottom = curline
+    endif
 endfunction
 
 function! <SID>StripTrailingWhitespaces()
-   let original_cursor = getpos('.')
-   exe b:insert_top ',' b:insert_bottom 's/\s\+$//e'
-   call setpos('.', original_cursor)
+    let original_cursor = getpos('.')
+    exe b:insert_top ',' b:insert_bottom 's/\s\+$//e'
+    call setpos('.', original_cursor)
 endfunction
 
 " copy to attached terminal using the yank(1) script:
 " https://github.com/sunaku/home/blob/master/bin/yank
 function! Yank(text) abort
-  let escape = system('yank', a:text)
-  if v:shell_error
-    echoerr escape
-  else
-    call writefile([escape], '/dev/tty', 'b')
-  endif
+    let escape = system('yank', a:text)
+    if v:shell_error
+        echoerr escape
+    else
+        call writefile([escape], '/dev/tty', 'b')
+    endif
 endfunction
 
 " automatically run yank(1) whenever yanking in Vim
 " (this snippet was contributed by Larry Sanderson)
 function! CopyYank() abort
-  call Yank(join(v:event.regcontents, "\n"))
+    call Yank(join(v:event.regcontents, "\n"))
 endfunction
 
 function! FileSize() abort
@@ -528,19 +529,19 @@ endfunction
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
+            \ coc#pum#visible() ? coc#pum#next(1) :
+            \ CheckBackspace() ? "\<Tab>" :
+            \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice.
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 
@@ -559,11 +560,11 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
+    if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+    else
+        call feedkeys('K', 'in')
+    endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -577,11 +578,11 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
@@ -610,12 +611,12 @@ omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
 " Use CTRL-S for selections ranges.
