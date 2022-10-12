@@ -140,7 +140,10 @@ else
    set statusline+=\ %{FileSize()}buf:\ %n\ \|\ col:\ %c%V,\ %l/%L\ %P
    set statusline+=\ \|
    if exists('+relativenumber')
-   set relativenumber
+       set relativenumber
+       nnoremap <leader>nu :set number!<CR>:set relativenumber!<CR>
+   else
+       nnoremap <leader>nu :set number!<CR>
    endif
    set number           " display line numbers
 endif
@@ -344,7 +347,6 @@ nnoremap <leader>ro :set ro!<Return>
 nnoremap <leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 nnoremap <leader>ex :Ex<CR>
 nnoremap <leader>te :Te<CR>
-nnoremap <leader>nu :set number!<CR>
 nnoremap <leader>ve :set ve=all<CR>
 nnoremap <leader>cve :set ve=<CR>
 
