@@ -7,5 +7,9 @@ if [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]; then
     PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 fi
 
+if [ -d /opt/homebrew/Cellar/libpq/14.5/bin/ ]; then
+        PATH="/opt/homebrew/Cellar/libpq/14.5/bin/:$PATH"
+fi
+
 export BASH_COMPLETION_COMPAT_DIR="/opt/homebrew/etc/bash_completion.d"
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
