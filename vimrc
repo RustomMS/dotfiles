@@ -174,7 +174,7 @@ set wildmode=list:longest
 set scrolloff=2
 set sidescrolloff=10
 set sidescroll=1
-set clipboard=unnamed
+"set clipboard=unnamed
 "set clipboard^=unnamed,unamedplus
 "set ttyfast
 set tabpagemax=20
