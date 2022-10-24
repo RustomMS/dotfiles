@@ -286,13 +286,15 @@ au CursorHold,CursorHoldI *.asciidoc *.adoc :checktime
 au FocusGained,BufEnter *.asciidoc *.adoc :checktime
 autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
 
-autocmd BufRead *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
+autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
 let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
+
+autocmd BufNewFile,BufRead ~/.cargo/* set nomodifiable
 
 " if has('TextYankPost')
 "    augroup ClipboardSync
