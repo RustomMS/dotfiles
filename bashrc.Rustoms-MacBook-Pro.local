@@ -7,8 +7,8 @@ if [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]; then
     PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 fi
 
-if [ -d /opt/homebrew/Cellar/libpq/14.5/bin/ ]; then
-        PATH="/opt/homebrew/Cellar/libpq/14.5/bin/:$PATH"
+if [ -d /opt/homebrew/Cellar/libpq/15.0/bin/ ]; then
+        PATH="/opt/homebrew/Cellar/libpq/15.0/bin/:$PATH"
 fi
 
 export BASH_COMPLETION_COMPAT_DIR="/opt/homebrew/etc/bash_completion.d"
