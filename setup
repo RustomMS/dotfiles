@@ -57,9 +57,9 @@ if [ ! -e "$HOME/.local" ] ; then
     mkdir -p "$HOME/.local"
 fi
 
-if [ ! -e "$HOME/.local" ] ; then
-    ln -s "$HOME/.local" "$HOME/local"
-fi
+# if [ ! -e "$HOME/local" ] ; then
+    # ln -s "$HOME/.local" "$HOME/local"
+# fi
 
 if [ ! -e "$HOME/.local/z" ] ; then
     # get z from rupa´s repo and install at "$HOME/.local/z"
