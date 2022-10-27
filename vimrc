@@ -18,8 +18,8 @@ Plug 'junegunn/vim-easy-align'
 
 " Plugin outside ~/.vim/plugged with post-update hook
 " Not needed since we can just use setup script to update
-" Plug 'junegunn/fzf', { 'dir': '~/local/fzf', 'do': { -> fzf#install() } }
-Plug '~/local/fzf'
+" Plug 'junegunn/fzf', { 'dir': '~/.local/fzf', 'do': { -> fzf#install() } }
+Plug '~/.local/fzf'
 Plug 'junegunn/fzf.vim'
 
 Plug 'rust-lang/rust.vim'

@@ -33,8 +33,8 @@ if  [[ -d $HOME/dotfiles/bin ]]; then
    export PATH="$PATH:$HOME/dotfiles/bin"
 fi
 
-if  [[ -d $HOME/local/bin ]]; then
-   export PATH="$PATH:$HOME/local/bin"
+if  [[ -d $HOME/.local/bin ]]; then
+   export PATH="$PATH:$HOME/.local/bin"
 fi
 
 if  [[ -f $HOME/.aliases ]]; then
@@ -82,7 +82,7 @@ if [[ "$-" = *i* ]]; then
    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
    # use github.com/rupa/z for directory history and quick access
-   . "$HOME/local/z/z.sh"
+   . "$HOME/.local/z/z.sh"
 
    # Setup fzf for fuzzy seraching and auto complete
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash

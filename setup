@@ -53,24 +53,24 @@ if [ ! -e "$HOME/.vim/colors/onehalflight.vim" ] ; then
     wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
 fi
 
-if [ ! -e "$HOME/local" ] ; then
-    mkdir -p "$HOME/local"
+if [ ! -e "$HOME/.local" ] ; then
+    mkdir -p "$HOME/.local"
 fi
 
 if [ ! -e "$HOME/.local" ] ; then
-    ln -s "$HOME/local" "$HOME/.local"
+    ln -s "$HOME/.local" "$HOME/local"
 fi
 
-if [ ! -e "$HOME/local/z" ] ; then
-    # get z from rupa´s repo and install at "$HOME/local/z"
-    mkdir -p "$HOME/local/z"
-    git clone --depth 1 https://github.com/rupa/z "$HOME/local/z"
+if [ ! -e "$HOME/.local/z" ] ; then
+    # get z from rupa´s repo and install at "$HOME/.local/z"
+    mkdir -p "$HOME/.local/z"
+    git clone --depth 1 https://github.com/rupa/z "$HOME/.local/z"
 fi
 
-if [ ! -e "$HOME/local/fzf" ] ; then
-    mkdir -p "$HOME/local/fzf"
-    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/local/fzf"
-    "$HOME/local/fzf/install" --no-update-rc --no-zsh --no-fish --completion --key-bindings
+if [ ! -e "$HOME/.local/fzf" ] ; then
+    mkdir -p "$HOME/.local/fzf"
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.local/fzf"
+    "$HOME/.local/fzf/install" --no-update-rc --no-zsh --no-fish --completion --key-bindings
 fi
 
 if [ ! -e ~/.vim/autoload/plug.vim ] ; then

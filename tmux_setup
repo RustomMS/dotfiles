@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Script for installing tmux on systems where you don't have root access.
-# tmux will be installed in $HOME/local/bin.
+# tmux will be installed in $HOME/.local/bin.
 # It's assumed that wget and a C/C++ compiler are installed.
 
 # exit on error
@@ -12,7 +12,7 @@ LIBEVENT_VERSION=2.1.8
 NCURSES_VERSION=5.9
 
 # create our directories
-mkdir -p $HOME/local $HOME/tmux_tmp $HOME/tmp
+mkdir -p $HOME/.local $HOME/tmux_tmp $HOME/tmp
 cd $HOME/tmux_tmp
 
 # download source files for tmux, libevent, and ncurses
@@ -27,7 +27,7 @@ wget -O ncurses-${NCURSES_VERSION}.tar.gz ftp://ftp.invisible-island.net/ncurses
 ############
 tar xvzf libevent-${LIBEVENT_VERSION}-stable.tar.gz
 cd libevent-${LIBEVENT_VERSION}-stable
-./configure --prefix=$HOME/local --disable-shared
+./configure --prefix=$HOME/.local --disable-shared
 make
 make install
 cd ..
@@ -37,7 +37,7 @@ cd ..
 ############
 tar xvzf ncurses-${NCURSES_VERSION}.tar.gz
 cd ncurses-${NCURSES_VERSION}
-./configure --prefix=$HOME/local
+./configure --prefix=$HOME/.local
 make
 make install
 cd ..
@@ -48,12 +48,12 @@ cd ..
 tar xvzf tmux-${TMUX_VERSION}.tar.gz
 cd tmux-${TMUX_VERSION}
 
-./configure CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
-CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib" make
+./configure CFLAGS="-I$HOME/.local/include -I$HOME/.local/include/ncurses" LDFLAGS="-L$HOME/.local/lib -L$HOME/.local/include/ncurses -L$HOME/.local/include"
+CPPFLAGS="-I$HOME/.local/include -I$HOME/.local/include/ncurses" LDFLAGS="-static -L$HOME/.local/include -L$HOME/.local/include/ncurses -L$HOME/.local/lib" make
 
-#./configure CFLAGS="-I$HOME/local/include" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include"
-#CPPFLAGS="-I$HOME/local/include" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/lib" make
-cp tmux $HOME/local/bin
+#./configure CFLAGS="-I$HOME/.local/include" LDFLAGS="-L$HOME/.local/lib -L$HOME/.local/include"
+#CPPFLAGS="-I$HOME/.local/include" LDFLAGS="-static -L$HOME/.local/include -L$HOME/.local/lib" make
+cp tmux $HOME/.local/bin
 cd $HOME
 
 # cleanup
@@ -62,5 +62,5 @@ rm -rf $HOME/tmux_tmp
 mkdir -p $HOME/.tmux/plugins
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
-echo "\$HOME/local/bin/tmux is now available. You can optionally add \$HOME/local/bin to your PATH."
-echo "For example: if [ -d "\$HOME/local/bin" ] ; then export PATH="\$PATH:\$HOME/local/bin"; fi"
+echo "\$HOME/.local/bin/tmux is now available. You can optionally add \$HOME/.local/bin to your PATH."
+echo "For example: if [ -d "\$HOME/.local/bin" ] ; then export PATH="\$PATH:\$HOME/.local/bin"; fi"
