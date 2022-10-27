@@ -68,9 +68,17 @@ if [[ "$-" = *i* ]]; then
    export HISTSIZE=100000
    export HISTFILESIZE=100000
    export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-   shopt -s histappend
-   shopt -s cmdhist
+   shopt -s autocd
+   shopt -s cdspell
+   shopt -s checkjobs
    shopt -s checkwinsize
+   shopt -s cmdhist
+   shopt -s dirspell
+   shopt -s dotglob
+   shopt -s extglob
+   shopt -s globstar
+   shopt -s histappend
+
    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
    # use github.com/rupa/z for directory history and quick access
