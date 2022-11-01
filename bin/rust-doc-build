@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
+
+usage() {
+    echo "Usage: $0 -d <path to cargo project> [-b <branch name>] [-u]"
+    exit
+}
+
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    usage
+fi
+
+# change directory to script dir
+# cd "$(dirname "$0")"
+
+main() {
+    while getopts "d:b:u" opt
+    do
+        case "${opt}" in
+            d) project=$OPTARG;;
+            b) branch=$OPTARG;;
+            u) fetch=1;;
+            *) usage;;
+        esac
+    done
+
+    if [[ ! ${project:-} ]]; then
+        usage
+    fi
+
+    cd "$project"
+
+    if [[ ${fetch:-} ]]; then
+        git fetch origin
+    fi
+
+    if [[ ${branch:-} ]]; then
+        git switch -d "$branch"
+    fi
+
+    cargo doc --document-private-items --manifest-path ./Cargo.toml
+}
+
+main "$@"
