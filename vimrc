@@ -288,6 +288,7 @@ autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype
 
 autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
 let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
