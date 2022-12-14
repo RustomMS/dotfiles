@@ -29,6 +29,10 @@ color_my_prompt
 # Misc
 export EDITOR=vim
 
+if  [[ -d /usr/local/bin ]]; then
+   export PATH="$PATH:/usr/local/bin"
+fi
+
 if  [[ -d $HOME/dotfiles/bin ]]; then
    export PATH="$PATH:$HOME/dotfiles/bin"
 fi
