@@ -8,8 +8,8 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 #[allow(unused_macros)]
 macro_rules! internal {
-        ($($arg:tt)*) => {
-                    crate::errors::$1::Internal(std::format!($($arg)*))
-                            };
+    ($($arg:tt)*) => {
+        crate::errors::Error::Internal(std::format!($($arg)*))
+    };
 }
 pub(crate) use internal;
