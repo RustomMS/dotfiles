@@ -9,19 +9,19 @@
 	autocrlf = input
 	whitespace = trailing-space,tab-in-indent,tabwidth=4
 [color]
-	 diff = auto
-	 status = auto
-	 branch = auto
-	 interactive = auto
-	 ui = auto
-	 pager = on
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = auto
+	pager = on
 [help]
 	autocorrect = 1
 [pull]
 	rebase = true
 [push]
-	 default = simple
-	 followTags = true
+	default = simple
+	followTags = true
 [fetch]
 	prune = true
 [diff]
@@ -43,6 +43,7 @@
 	sparse-file = rev-parse --git-path info/sparse-checkout
 	sparse-dir = rev-parse --git-path info
 	top = rev-parse --show-toplevel
+	root = rev-parse --show-toplevel
 	type = cat-file -t
 	dump = cat-file -p
 	wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
@@ -66,4 +67,3 @@
 	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git switch pr/$1; }; f"
 	pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
 	save = "!git add -A && git commit -e -m 'chore: commit save point'"
-
