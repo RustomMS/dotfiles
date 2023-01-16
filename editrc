@@ -1,0 +1,5 @@
+# editing mode vi
+bind -v
+
+# jk keybinding for normal mode in editline
+bind "jk" vi-command-mode
