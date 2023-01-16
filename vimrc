@@ -295,6 +295,9 @@ autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
 
+" git commit message editor
+autocmd FileType gitcommit setlocal spell
+
 autocmd BufNewFile,BufRead ~/.cargo/* set nomodifiable
 
 " if has('TextYankPost')
