@@ -43,7 +43,7 @@ endif
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml']
 
 " Initialize plugin system
 call plug#end()
@@ -288,6 +288,7 @@ autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype
 
 autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype proto setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
 autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
 let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
@@ -311,7 +312,12 @@ autocmd BufNewFile,BufRead ~/.cargo/* set nomodifiable
 autocmd InsertLeave * set nopaste
 
 " Rust settings
-au Filetype rust set colorcolumn=100
+au Filetype rust call SetRustOpts()
+
+function! SetRustOpts()
+    setlocal colorcolumn=100
+    "call CocAction('toggleExtension', 'coc-rust-analyzer')
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
@@ -381,6 +387,19 @@ vnoremap <leader>ff y/\<<C-R>"\><CR>
 noremap <leader>pf :call Yank(expand("%:p"))<CR>
 noremap <leader>ph :call Yank(expand("%:h"))<CR>
 noremap <leader>pt :call Yank(expand("%:t"))<CR>
+nnoremap <leader>i :CocCommand document.toggleInlayHint<CR>
+nnoremap <leader>cr :call CocAction('toggleExtension', 'coc-rust-analyzer')<CR>
+nnoremap <leader>di :call CocAction('diagnosticToggle')<CR>
+nnoremap <leader>coc :call CocToggle()<CR>
+
+function! CocToggle()
+    if g:coc_enabled
+        CocDisable
+    else
+        CocEnable
+    endif
+endfunction
+command! CocToggle :call CocToggle()
 
 " Press <leader>cc to toggle color column
 "nnoremap <leader>cc :call <SID>ToggleColorColumn74()<cr>
