@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+start_time=$(date -Iseconds)
+
+echo "$start_time"
+
+# Set the maximum number of retries
+max_retries=100
+
+# Set a counter for the number of retries
+retries=0
+
+# Run the command in a loop
+while true; do
+  # Increment the retry counter
+  retries=$((retries + 1))
+
+  echo "Attempt $retries:"
+  echo "================="
+
+  # Execute the command
+  "$@"
+
+  # Check the exit status of the command
+  if [ $? -ne 0 ]; then
+    # The command has failed, so break out of the loop
+    break
+  fi
+
+  # Check if the maximum number of retries has been reached
+  if [ $retries -ge $max_retries ]; then
+    # The maximum number of retries has been reached, so break out of the loop
+    break
+  fi
+
+  # Sleep for a short period of time before retrying
+  sleep 0.01
+done
+
+echo "Total number of attempts: $retries"
+
+end_time=$(date -Iseconds)
+
+echo "start time: $start_time"
+echo "end   time: $end_time"
+
+
