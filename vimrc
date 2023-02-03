@@ -44,7 +44,7 @@ endif
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml', 'coc-sql']
 
 " Initialize plugin system
 call plug#end()
@@ -233,7 +233,6 @@ else
 endif
 
 "set lazyredraw
-au BufNewFile,BufRead *.hbs set filetype=html
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo
@@ -288,10 +287,12 @@ au FocusGained,BufEnter *.asciidoc *.adoc :checktime
 autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
 
 autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
+autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype proto setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
 autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
+au BufNewFile,BufRead *.hbs set filetype=html
 let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
