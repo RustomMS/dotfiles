@@ -21,6 +21,7 @@ Plug 'junegunn/vim-easy-align'
 " Plug 'junegunn/fzf', { 'dir': '~/.local/fzf', 'do': { -> fzf#install() } }
 Plug '~/.local/fzf'
 Plug 'junegunn/fzf.vim'
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
 
 Plug 'rust-lang/rust.vim'
 
