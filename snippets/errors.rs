@@ -3,6 +3,10 @@ pub enum Error {
     #[error(transparent)]
     Io(#[from] std::io::Error),
 
+    // TODO Remove
+    #[error("Coming soon! This feature is unimplemented")]
+    Unimplemented,
+
     #[error("internal: {0}")]
     Internal(String),
 }
