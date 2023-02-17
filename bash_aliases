@@ -15,9 +15,11 @@ alias l="ls -CF"
 alias clippy="cargo +stable clippy --all-features -- --deny warnings"
 alias clippy-nightly="cargo +nightly clippy --all-features -- --deny warnings"
 alias rfmt="rustfmt +nightly --check --config-path ~/Developer/rustfmt.toml"
-alias rfmtchanges="rustfmt +nightly --check --config-path ~/Developer/rustfmt.toml \$({ git diff --name-only -- '*.rs' ; git diff --name-only --staged -- '*.rs'; } | sort | uniq)"
 alias rfmtfix="rustfmt +nightly --config-path ~/Developer/rustfmt.toml"
+alias rfmtchanges="rustfmt +nightly --check --config-path ~/Developer/rustfmt.toml \$({ git diff --name-only -- '*.rs' ; git diff --name-only --staged -- '*.rs'; } | sort | uniq)"
 alias rfmtfixchanges="rustfmt +nightly --config-path ~/Developer/rustfmt.toml \$({ git diff --name-only -- '*.rs' ; git diff --name-only --staged -- '*.rs'; } | sort | uniq)"
+alias rfmtpr="rustfmt +nightly --check --config-path ~/Developer/rustfmt.toml \$({ git diff --name-only main -- '*.rs' ; git diff --name-only --staged main -- '*.rs'; } | sort | uniq)"
+alias rfmtfixpr="rustfmt +nightly --config-path ~/Developer/rustfmt.toml \$({ git diff --name-only main -- '*.rs' ; git diff --name-only --staged main -- '*.rs'; } | sort | uniq)"
 
 # Git related
 alias gr='cd $(git rev-parse --show-toplevel)'
