@@ -418,7 +418,8 @@ nnoremap <F2> :source $HOME/.vimrc<Return>
 " or <leader>/ for // comments, or <leader>c to clear comments.
 noremap <leader># :s/^\s*/&# /<CR> <Esc>:nohlsearch <CR>
 noremap <leader>/ :s/^\s*/&\/\/ /<CR> <Esc>:nohlsearch <CR>
-noremap <leader>c :s/\(^\s*\)\(\/\/\\|--\\|> \\|[#"%!;]\)\s\?/\1/<CR> <Esc>:nohlsearch<CR>
+noremap <leader>- :s/^\s*/&-- /<CR> <Esc>:nohlsearch <CR>
+noremap <leader>c :s/\(^\s*\)\(\/\/\\|--\\|> \\|[#\-"%!;]\)\s\?/\1/<CR> <Esc>:nohlsearch<CR>
 
 " wrapping comments -- select a range then hit <leader>* to put  /* */ around
 " selection, or <leader>d to clear them
