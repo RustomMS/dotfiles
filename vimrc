@@ -26,6 +26,9 @@ let $FZF_DEFAULT_COMMAND = 'rg --files'
 
 Plug 'rust-lang/rust.vim'
 
+Plug 'tpope/vim-dadbod'
+Plug 'tpope/vim-commentary'
+
 " Airline
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
