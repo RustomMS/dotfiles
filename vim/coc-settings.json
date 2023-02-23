@@ -1,0 +1,7 @@
+{
+  "rust-analyzer.imports.granularity.group": "module",
+  "rust-analyzer.imports.prefix": "crate",
+  "rust-analyzer.lru.capacity": 256,
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.inlayHints.maxLength": 200
+}
