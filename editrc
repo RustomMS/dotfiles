@@ -9,3 +9,6 @@ bind "^R" em-inc-search-prev
 
 # Map jk to ESC like vim (use ^V j to type letter j in insert mode)
 bind "jk" vi-command-mode
+
+# Let's triple j, i.e. jjj, insert the letter j. jj is mapped to same as ^V
+bind "jj" ed-quoted-insert
