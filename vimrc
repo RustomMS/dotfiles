@@ -321,6 +321,7 @@ au Filetype rust call SetRustOpts()
 function! SetRustOpts()
     setlocal colorcolumn=100
     "call CocAction('toggleExtension', 'coc-rust-analyzer')
+    nnoremap <leader>em :CocCommand rust-analyzer.expandMacro<Return>
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
