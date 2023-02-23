@@ -291,6 +291,7 @@ autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cind
 autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype proto setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
+autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
 au BufNewFile,BufRead *.hbs set filetype=html
