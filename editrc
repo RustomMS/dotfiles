@@ -1,5 +1,11 @@
-# editing mode vi
+# Edit in vi mode
 bind -v
 
-# jk keybinding for normal mode in editline
+# Tab to complete
+bind \\t rl_complete
+
+# Reverse search through history
+bind "^R" em-inc-search-prev
+
+# Map jk to ESC like vim (use ^V j to type letter j in insert mode)
 bind "jk" vi-command-mode
