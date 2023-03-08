@@ -13,8 +13,6 @@ filetype off
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin()
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-Plug 'junegunn/vim-easy-align'
 
 " Plugin outside ~/.vim/plugged with post-update hook
 " Not needed since we can just use setup script to update
@@ -28,6 +26,12 @@ Plug 'rust-lang/rust.vim'
 
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
 " Airline
 " Plug 'vim-airline/vim-airline'
@@ -50,6 +54,8 @@ endif
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml', 'coc-sql']
 
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
 " Initialize plugin system
 call plug#end()
 
@@ -135,8 +141,8 @@ if &diff
     set diffopt+=indent-heuristic
 else
     "Display only tail of file path
-    set statusline=\|
-    set statusline+=\ %t
+    " set statusline=\|
+    set statusline=\ %t
     set statusline+=%{GitBranch()}
     set statusline+=\ [%{strlen(&fenc)?&fenc:'none'},\ %{&ff}]\ %h%y%r%m
     set statusline+=\ \|
@@ -291,12 +297,16 @@ au FocusGained,BufEnter *.asciidoc *.adoc :checktime
 autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
 
 autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
+autocmd BufRead,BufNewFile *.slt,*.slti setlocal filetype=slt expandtab
+autocmd Filetype slt setlocal commentstring=#\ %s expandtab list
 autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype proto setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
 autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype toml setlocal commentstring=#\ %s
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
+autocmd Filetype sql setlocal commentstring=--\ %s
 au BufNewFile,BufRead *.hbs set filetype=html
 let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
@@ -306,7 +316,7 @@ autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
 " git commit message editor
 autocmd FileType gitcommit setlocal spell
 
-autocmd BufNewFile,BufRead ~/.cargo/* set nomodifiable
+autocmd BufNewFile,BufRead ~/.cargo/* setlocal nomodifiable readonly
 
 " if has('TextYankPost')
 "    augroup ClipboardSync
@@ -364,7 +374,7 @@ else
 endif
 
 nnoremap <leader>w :w<Return>
-nnoremap <leader>ro :set ro!<Return>
+nnoremap <leader>ro :set readonly!<Return>
 nnoremap <leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 nnoremap <leader>ex :Ex<CR>
 nnoremap <leader>te :Te<CR>
@@ -670,7 +680,7 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}\ \|
 
 " Mappings for CoCList
 " Show all diagnostics.
