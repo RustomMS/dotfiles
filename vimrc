@@ -160,6 +160,7 @@ else
 endif
 set showmode            " show current mode
 set nostartofline       " When using movement cmds keep cursor at position
+set whichwrap=b,s,<,>,h,l,[,]
 set smartcase           " smart about cases during search
 set hlsearch            " highlight search results
 noh
