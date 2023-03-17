@@ -430,6 +430,7 @@ nnoremap k gk
 nnoremap <F3> :tabe $HOME/.vimrc<Return>
 nnoremap <F2> :source $HOME/.vimrc<Return>
 
+" TODO replace with comment string
 " lhs comments -- select a range then hit <leader># to insert hash comments
 " or <leader>/ for // comments, or <leader>c to clear comments.
 noremap <leader># :s/^\s*/&# /<CR> <Esc>:nohlsearch <CR>
@@ -711,5 +712,7 @@ if v:version >= 800
     " All messages and errors will be ignored.
     silent! helptags ALL
 endif
+
+source ~/.vim/local_vimrc
 
 " ~/.vimrc ends here
