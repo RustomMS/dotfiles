@@ -167,9 +167,7 @@ noh
 set ignorecase          " ignores case during search
 set showmatch           " shows matching set of brackets
 set confirm             " raise dialog during error
-
-" when saving files
-"set number              " display line numbers
+                        " when saving files
 set cursorline          " shows current line
 if exists('+colorcolumn')
     set colorcolumn=80
@@ -318,13 +316,6 @@ autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
 autocmd FileType gitcommit setlocal spell
 
 autocmd BufNewFile,BufRead ~/.cargo/* setlocal nomodifiable readonly
-
-" if has('TextYankPost')
-"    augroup ClipboardSync
-"       autocmd!
-"       autocmd TextYankPost * call CopyYank()
-"    augroup END
-" endif
 
 " Leave paste mode when leaving insert mode
 autocmd InsertLeave * set nopaste
