@@ -296,11 +296,11 @@ au FocusGained,BufEnter *.asciidoc *.adoc :checktime
 autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
 
 autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
-autocmd BufRead,BufNewFile *.slt,*.slti setlocal filetype=slt expandtab
+autocmd BufRead,BufNewFile *.slt,*.slti setlocal filetype=slt expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype slt setlocal commentstring=#\ %s expandtab list
 autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-autocmd Filetype proto setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
+autocmd Filetype proto setlocal commentstring=\/\/\ %s expandtab tabstop=2 shiftwidth=2 softtabstop=2 textwidth=80
 autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype toml setlocal commentstring=#\ %s
