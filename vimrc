@@ -24,7 +24,7 @@ let $FZF_DEFAULT_COMMAND = 'rg --files'
 
 Plug 'rust-lang/rust.vim'
 
-Plug 'tpope/vim-dadbod'
+" Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-sleuth'
