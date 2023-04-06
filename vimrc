@@ -282,7 +282,7 @@ set wrap "Wrap lines
 " Markdown settings
 "au FileType markdown setlocal textwidth=0 formatoptions=aqnlw spell
 au FileType markdown setlocal spell
-let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
+let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml', 'rust']
 let g:markdown_minlines = 500
 au CursorHold,CursorHoldI *.md :checktime
 au FocusGained,BufEnter *.md :checktime
@@ -295,8 +295,10 @@ au CursorHold,CursorHoldI *.asciidoc *.adoc :checktime
 au FocusGained,BufEnter *.asciidoc *.adoc :checktime
 autocmd BufNewFile,BufRead *.asciidoc *.adoc setlocal formatoptions=qnl filetype=asciidoc
 
-autocmd BufRead,BufNewFile *.C,*.c,*.cpp,*.h setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd BufRead,BufNewFile *.slt,*.slti setlocal filetype=slt expandtab tabstop=2 shiftwidth=2 softtabstop=2
+au BufNewFile,BufRead *.hbs set filetype=html
+
+autocmd FileType c,cpp setlocal formatoptions=cljprq  cindent  comments=sr:/*,mb:*,el:*/,:// expandtab
 autocmd Filetype slt setlocal commentstring=#\ %s expandtab list
 autocmd Filetype sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
@@ -306,8 +308,8 @@ autocmd Filetype go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype toml setlocal commentstring=#\ %s
 autocmd Filetype gitconfig setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd Filetype sql setlocal commentstring=--\ %s
-au BufNewFile,BufRead *.hbs set filetype=html
-let g:markdown_fenced_languages = ['bash=sh', 'ksh=sh', 'sh', 'c', 'cpp', 'perl', 'vim', 'python', 'diff', 'xml']
+
+" Clean up trailing whitespace only on edited lines
 autocmd InsertEnter * :call <SID>SetupTrailingWhitespaces()
 autocmd InsertLeave * :call <SID>StripTrailingWhitespaces()
 autocmd CursorMovedI * :call <SID>UpdateTrailingWhitespace()
@@ -704,6 +706,13 @@ if v:version >= 800
     silent! helptags ALL
 endif
 
-source ~/.vim/local_vimrc
+"Function to source only if file exists
+function SourceIfExists(file)
+    if filereadable(expand(a:file))
+        exe 'source' a:file
+    endif
+endfunction
+
+call SourceIfExists("~/.vim/local_vimrc")
 
 " ~/.vimrc ends here
