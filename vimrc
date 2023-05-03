@@ -24,6 +24,9 @@ let $FZF_DEFAULT_COMMAND = 'rg --files'
 
 Plug 'rust-lang/rust.vim'
 
+" AI copilot alternative
+Plug 'Exafunction/codeium.vim'
+
 " Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
@@ -52,7 +55,7 @@ endif
 
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml', 'coc-sql']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-sh', 'coc-go', 'coc-json', 'coc-vimlsp', 'coc-toml', 'coc-sql', 'coc-clangd']
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
