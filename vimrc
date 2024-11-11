@@ -35,6 +35,8 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+"
+" Plug 'chrisbra/vim-autoread'
 
 " Airline
 " Plug 'vim-airline/vim-airline'
@@ -565,6 +567,8 @@ function! GitBranch() abort
     endif
 endfunction
 
+if has_key(plugs, "coc.nvim")
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: There's always complete item selected by default, you may want to enable
 " no select by `"suggest.noselect": true` in your configuration file.
@@ -697,6 +701,7 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+endif
 
 if v:version >= 800
     " Put these lines at the very end of your vimrc file.

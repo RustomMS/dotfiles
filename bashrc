@@ -86,7 +86,7 @@ if [[ "$-" = *i* ]]; then
    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
    # use github.com/rupa/z for directory history and quick access
-   . "$HOME/.local/z/z.sh"
+   [ -f ~/.local/z/z.sh ] && source ~/.local/z/z.sh
 
    # Setup fzf for fuzzy seraching and auto complete
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
