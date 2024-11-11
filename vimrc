@@ -25,7 +25,7 @@ let $FZF_DEFAULT_COMMAND = 'rg --files'
 Plug 'rust-lang/rust.vim'
 
 " AI copilot alternative
-Plug 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 
 " Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-commentary'
