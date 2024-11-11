@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+vim_options=""
+
+if [ $# -eq 0 ]; then
+  vim_options="-c 'normal! No file specified'"
+else
+  vim_options="-p $*"
+fi
+
+bash -l -c "nvim $vim_options"
