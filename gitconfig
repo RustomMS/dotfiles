@@ -15,6 +15,8 @@
 	interactive = auto
 	ui = auto
 	pager = on
+[credential]
+	helper = cache
 [help]
 	autocorrect = 1
 [pull]
@@ -24,9 +26,14 @@
 	followTags = true
 [fetch]
 	prune = true
+[merge]
+	mnemonicprefix = true
+	tool = nvimdiff2
 [diff]
 	mnemonicprefix = true
-	tool = vimdiff
+	tool = nvimdiff
+[difftool]
+	prompt = true
 [status]
 	relativePaths = true
 [commit]
@@ -50,6 +57,9 @@
 	amend = commit --amend
 	d = diff
 	ds = diff --staged
+	prrbi = "!git rebase -i $(git merge-base HEAD master)"
+	prdiff = "!git diff $(git merge-base HEAD master)"
+	prdifftool = "!git difftool $(git merge-base HEAD master)"
 	pullr = pull --rebase
 	dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
 	list = show --pretty=format:'' --name-only
@@ -60,10 +70,47 @@
 	files = log --pretty=oneline --stat
 	outstanding = rebase -i @{u}
 	reword = commit --amend --only
+	redate = commit --date=now --amend 
 	s = status
 	zap = fetch -p
 	day = log --reverse --no-merges --branches=* --date=local --since=midnight --author=\"$(git config --get user.name)\"
 	delete-merged-branches = "!f() { git checkout --quiet main && git branch --merged | grep --invert-match '\\*' | xargs -n 1 git branch --delete; git checkout --quiet @{-1}; }; f"
-	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git switch pr/$1; }; f"
+	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/head:pr/$1 && git switch pr/$1; }; f"
 	pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
-	save = "!git add -A && git commit -e -m 'wip: '"
+	save = "!git add --update && git commit --edit --message 'wip: '"
+	# Pushes to tracking branch (note assumes remote is called origin)
+	push-tracking = "!f() { remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name --short @{upstream} | sed 's#^origin/##'); git push origin HEAD:$remote_branch; }; f"
+	# Show all of my configured aliases
+	aliases = config --get-regexp alias
+	# Delete a tag locally and remotely
+	dtag    = "!git tag -d $1 ; git push --delete origin $1 ; echo \"Deleted tag \""
+	# List tags and when their commit being referred to were added
+	taglist = "!f() { for i in `git tag` ; do s="`git show --no-patch --format=%H ${i} | tail -n 1`" ; printf \"%s %s\n\" \"`git when ${s}`\" \"${i}\" ; done | sort -r; }; f"
+	# Delete a branch locally and remotely
+	dbranch = "!git branch -D $1 ; git push --delete origin `echo $1 | sed -e 's@remotes/origin/@@'` ; echo \"Deleted branch \""
+	# Show when the current HEAD was created
+	when    = show --no-patch --date=format:%F --format=\"%cd %cr\"
+	# List the current branches that have been merged into the master branch
+	bmerged = "!git branch -a --merged origin/master | egrep -v -e '(HEAD|master|hotfix/)' || exit 0"
+	# List merged branches and when they were last changed
+	blist = "!f() { for i in `git bmerged` ; do printf \"%s %s\\n\" \"`git when ${i}`\" \"${i}\" ; done | sort -r; }; f"
+	# Trim the repository
+	trim = "!git reflog expire --expire=now --all && git gc --prune=now"
+	# Delete merged branches
+	dmerged = "!f() { for i in `git bmerged` ; do git dbranch ${i} ; done ; }; f"
+	# Update master branch with origin master
+	update-master = !git fetch origin master:master
+	hide = update-index --assume-unchanged
+	unhide = update-index --no-assume-unchanged
+	hidden = !git ls-files -v | grep \"^[a-z]\"
+	unhide-all = "!git hidden | awk '{print $2}' | xargs git unhide"
+	ignored = "!git status -s --ignored | grep \"^!!\""
+	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git switch pr/$1; }; f"
+	pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+	fpush = push
+	sb = "!git switch $(git branch | fzf)"
+	drop-last-commit = "!f() { git --no-pager diff --stat; git --no-pager log -1 --oneline; read -p 'Are you sure you want to drop the last commit? [y/N] ' -n 1 -r; echo; if [[ $REPLY =~ ^[Yy]$ ]]; then git reset --keep HEAD~1; else echo 'Drop last commit cancelled.'; fi }; f"
+	is-ancestor = "!f() { git merge-base --is-ancestor $1 HEAD; if [[ 0 -eq $? ]]; then echo 'true'; else echo 'false'; fi }; f"
+[maintenance]
+[branch]
+	sort = -committerdate
