@@ -1,0 +1,4 @@
+theme = "Everforest Dark - Hard"
+font-family = FiraCode Nerd Font Mono
+font-size = 14
+command = /opt/homebrew/bin/bash
