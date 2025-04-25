@@ -23,3 +23,5 @@ alias rfmtfixpr="rustfmt +nightly --config-path ~/Developer/rustfmt.toml \$({ gi
 
 # Git related
 alias gr='cd $(git rev-parse --show-toplevel)'
+
+alias vim='nvim'
