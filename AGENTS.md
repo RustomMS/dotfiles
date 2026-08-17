@@ -17,8 +17,8 @@ Inspect `./setup` before changing its behaviour. It changes the live home direct
 
 The primary machine uses:
 
-- Account: `rustom.shareef`
-- Home: `/Users/rustom.shareef`
+- Account: `rustom`
+- Home: `/Users/rustom`
 - Platform: `aarch64-darwin`
 
 Keep personal Git identity in ignored, machine-local configuration rather than tracked files.
