@@ -44,9 +44,9 @@ Stow packages are grouped by responsibility:
 - `stow/common/` — shell, Git, tmux, Vim, Neovim, SSH, and shared tools
 - `stow/macos/` — AeroSpace and terminal applications
 - `stow/pi/` — Pi.dev configuration
-- `stow/host-$HOSTNAME/` — optional host-specific files for the current machine
+- `stow/host-<hostname>/` — optional host-specific files for the current machine
 
-When a matching `stow/host-$HOSTNAME/` package exists, `setup` stows it automatically. Host packages can provide `.bashrc.$HOSTNAME` without competing with the shared `.bashrc`. Keep secrets and private paths in ignored local files instead.
+When a matching `stow/host-<hostname>/` package exists, `setup` stows it automatically. Host packages can provide `.bashrc.<hostname>` without competing with the shared `.bashrc`. Keep secrets and private paths in ignored local files instead.
 
 Configurations use XDG paths where the application supports them, including Git, tmux, Vim, Neovim, Rustfmt, and terminal applications. Native paths remain for Bash, SSH, and Pi.dev where those tools expect them.
 

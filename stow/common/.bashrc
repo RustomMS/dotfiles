@@ -53,8 +53,9 @@ if  [[ -f $HOME/.aliases ]]; then
    . "$HOME/.aliases"
 fi
 
-if [[ -r "$HOME/.bashrc.$HOSTNAME" ]]; then
-   . "$HOME/.bashrc.$HOSTNAME"
+HOST_NAME=$(hostname)
+if [[ -r "$HOME/.bashrc.$HOST_NAME" ]]; then
+   . "$HOME/.bashrc.$HOST_NAME"
 fi
 
 if [[ -r "$HOME/.localrc" ]]; then
