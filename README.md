@@ -17,7 +17,7 @@ Install the tools and GUI applications declared in `Brewfile`:
 ./setup --brew
 ```
 
-Check the Stow and mise configuration without changing files:
+Check Stow conflicts and validate the mise configuration without changing files:
 
 ```bash
 ./setup --check

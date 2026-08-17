@@ -6,7 +6,7 @@ This repository contains Rustom's personal macOS configuration.
 
 `./setup` is the installation entry point for Apple Silicon macOS. It uses the current `$HOME` and hostname rather than assuming a particular account or machine.
 
-- `./setup --check` simulates Stow and verifies that mise is available without changing the live home directory.
+- `./setup --check` simulates Stow and validates the mise configuration without changing the live home directory.
 - `./setup` stows configuration and then installs the tools declared in mise.
 - `./setup --brew` installs the tools and applications listed in `Brewfile` without stowing configuration.
 - `./setup --check --brew` checks the Homebrew bundle without installing it.

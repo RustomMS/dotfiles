@@ -4,6 +4,7 @@ set -euo pipefail
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BREWFILE="$REPO/Brewfile"
 STOW_DIR="$REPO/stow"
+MISE_CONFIG="$STOW_DIR/common/.config/mise/config.toml"
 STOW_PACKAGES=(common macos pi)
 HOST_NAME=$(hostname)
 HOST_PACKAGE="host-$HOST_NAME"
@@ -78,7 +79,8 @@ check_stow() {
 
 check_mise() {
   require_command mise
-  [[ -f "$STOW_DIR/common/.config/mise/config.toml" ]] || fail "mise configuration is missing"
+  [[ -f "$MISE_CONFIG" ]] || fail "mise configuration is missing: $MISE_CONFIG"
+  mise config get --file "$MISE_CONFIG" tools >/dev/null
 }
 
 apply_stow() {
