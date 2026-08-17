@@ -35,7 +35,7 @@ Apply the configuration:
 ./setup
 ```
 
-Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically.
+Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically. Pi configuration files are linked individually; authentication, model cache, sessions, and skills remain in `~/.pi/agent`. Existing Pi configuration files are backed up under `~/.pi-config-backups` before linking.
 
 ## Configuration
 
@@ -43,7 +43,7 @@ Stow packages are grouped by responsibility:
 
 - `stow/common/` — shell, Git, tmux, Vim, Neovim, SSH, and shared tools
 - `stow/macos/` — AeroSpace and terminal applications
-- `stow/pi/` — Pi.dev configuration
+- `stow/pi/` — Pi.dev configuration; `setup` links only its configuration files and leaves Pi state under `~/.pi/agent` untouched
 - `stow/host-<hostname>/` — optional host-specific files for the current machine
 
 When a matching `stow/host-<hostname>/` package exists, `setup` stows it automatically. Host packages can provide `.bashrc.<hostname>` without competing with the shared `.bashrc`. Keep secrets and private paths in ignored local files instead.

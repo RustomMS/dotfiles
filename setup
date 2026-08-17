@@ -5,7 +5,10 @@ REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BREWFILE="$REPO/Brewfile"
 STOW_DIR="$REPO/stow"
 MISE_CONFIG="$STOW_DIR/common/.config/mise/config.toml"
-STOW_PACKAGES=(common macos pi)
+PI_AGENT_CONFIG_DIR="$STOW_DIR/pi/.pi/agent"
+PI_AGENT_DIR="$HOME/.pi/agent"
+PI_BACKUP_DIR="$HOME/.pi-config-backups"
+STOW_PACKAGES=(common macos)
 HOST_NAME=$(hostname)
 HOST_PACKAGE="host-$HOST_NAME"
 if [[ -d "$STOW_DIR/$HOST_PACKAGE" ]]; then
@@ -20,8 +23,12 @@ usage() {
   cat <<'EOF'
 Usage: ./setup [--check] [--brew]
 
-  --check  validate Stow, mise, and the environment without changing files
+  --check  validate Stow, mise, Pi configuration, and the environment without changing files
   --brew   install applications and tools from Brewfile, without stowing files
+
+Pi configuration files are linked individually. Pi authentication, model cache,
+sessions, and skills remain in ~/.pi/agent. Existing Pi config files are backed
+up under ~/.pi-config-backups before they are replaced.
 EOF
 }
 
@@ -64,6 +71,67 @@ install_homebrew_bundle() {
 
 stow_command() {
   stow --no-folding --target="$HOME" --dir="$STOW_DIR" "$@"
+}
+
+check_pi_package() {
+  [[ -d "$PI_AGENT_CONFIG_DIR" ]] || fail "Pi configuration directory is missing: $PI_AGENT_CONFIG_DIR"
+
+  local path relative_path
+  while IFS= read -r -d '' path; do
+    relative_path=${path#"$PI_AGENT_CONFIG_DIR/"}
+    case "$relative_path" in
+      settings.json|models.json|cache-keep-live.json|extensions/*.ts|themes/*.json)
+        ;;
+      *)
+        fail "unsupported file in Pi package: stow/pi/.pi/agent/$relative_path"
+        ;;
+    esac
+  done < <(find "$PI_AGENT_CONFIG_DIR" -type f -print0)
+}
+
+check_pi_config() {
+  check_pi_package
+  [[ -d "$PI_AGENT_DIR" ]] || {
+    printf 'Pi config: create %s\n' "$PI_AGENT_DIR"
+    return 0
+  }
+
+  local source relative_path target
+  while IFS= read -r -d '' source; do
+    relative_path=${source#"$PI_AGENT_CONFIG_DIR/"}
+    target="$PI_AGENT_DIR/$relative_path"
+    if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+      continue
+    elif [[ -e "$target" || -L "$target" ]]; then
+      printf 'Pi config: back up and link %s\n' "$target"
+    else
+      printf 'Pi config: link %s\n' "$target"
+    fi
+  done < <(find "$PI_AGENT_CONFIG_DIR" -type f -print0)
+}
+
+sync_pi_config() {
+  local backup_stamp
+  backup_stamp=$(date +%Y%m%d-%H%M%S)
+
+  local source relative_path target backup_path
+  while IFS= read -r -d '' source; do
+    relative_path=${source#"$PI_AGENT_CONFIG_DIR/"}
+    target="$PI_AGENT_DIR/$relative_path"
+
+    if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+      continue
+    elif [[ -e "$target" || -L "$target" ]]; then
+      backup_path="$PI_BACKUP_DIR/$backup_stamp/$relative_path"
+      mkdir -p "$(dirname "$backup_path")"
+      mv "$target" "$backup_path"
+      printf 'Backed up existing Pi config: %s\n' "$target"
+    fi
+
+    mkdir -p "$(dirname "$target")"
+    ln -s "$source" "$target"
+    printf 'Linked Pi config: %s\n' "$target"
+  done < <(find "$PI_AGENT_CONFIG_DIR" -type f -print0)
 }
 
 check_stow() {
@@ -136,6 +204,7 @@ if [[ "$INSTALL_BREW" == true ]]; then
   exit 0
 fi
 
+check_pi_config
 check_stow
 check_mise
 
@@ -146,5 +215,6 @@ if [[ "$CHECK_ONLY" == true ]]; then
 fi
 
 apply_stow
+sync_pi_config
 mise install
-printf 'Dotfiles stowed and mise tools installed.\n'
+printf 'Dotfiles stowed, Pi configuration synced, and mise tools installed.\n'
