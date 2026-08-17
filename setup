@@ -5,6 +5,11 @@ REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BREWFILE="$REPO/Brewfile"
 STOW_DIR="$REPO/stow"
 STOW_PACKAGES=(common macos pi)
+HOST_NAME=$(hostname)
+HOST_PACKAGE="host-$HOST_NAME"
+if [[ -d "$STOW_DIR/$HOST_PACKAGE" ]]; then
+  STOW_PACKAGES+=("$HOST_PACKAGE")
+fi
 CHECK_ONLY=false
 INSTALL_BREW=false
 STOW_FAILURES=0

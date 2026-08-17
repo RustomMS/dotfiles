@@ -53,6 +53,14 @@ if  [[ -f $HOME/.aliases ]]; then
    . "$HOME/.aliases"
 fi
 
+if [[ -r "$HOME/.bashrc.$HOSTNAME" ]]; then
+   . "$HOME/.bashrc.$HOSTNAME"
+fi
+
+if [[ -r "$HOME/.localrc" ]]; then
+   . "$HOME/.localrc"
+fi
+
 if [ -f ~/.bash_aliases ]; then
     . "$HOME/.bash_aliases"
 fi
@@ -119,9 +127,4 @@ if [[ "$-" = *i* ]]; then
    export LESS_TERMCAP_ZO=$(tput ssupm)
    export LESS_TERMCAP_ZW=$(tput rsupm)
    export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
-fi
-
-# Keep machine-local overrides out of this repository.
-if [[ -r "$HOME/.localrc" ]]; then
-   . "$HOME/.localrc"
 fi
