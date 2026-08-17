@@ -4,24 +4,23 @@ This repository contains Rustom's personal macOS configuration.
 
 ## Current setup
 
-- `./setup` is the installation entry point.
-- GNU Stow creates links from the repository's `stow/` packages into the home directory.
-- It warns about conflicting existing paths and stops without moving them.
-- mise installs the declared language runtimes and project tools.
-- Homebrew installs the tools and GUI applications listed in `Brewfile`.
-- Configuration stays in each tool's native format.
+`./setup` is the installation entry point for Apple Silicon macOS. It uses the current `$HOME` and hostname rather than assuming a particular account or machine.
 
-Inspect `./setup` before changing its behaviour. Use `./setup --check` to validate without changing the live home directory; apply mode changes it.
+- `./setup --check` simulates Stow and verifies that mise is available without changing the live home directory.
+- `./setup` stows configuration and then installs the tools declared in mise.
+- `./setup --brew` installs the tools and applications listed in `Brewfile` without stowing configuration.
+- `./setup --check --brew` checks the Homebrew bundle without installing it.
 
-## Environment
+GNU Stow links these packages into the home directory:
 
-The primary machine uses:
+- `stow/common/` — portable shell, Git, editor, tmux, SSH, and tool configuration
+- `stow/macos/` — macOS application configuration
+- `stow/pi/` — personal Pi configuration
+- `stow/host-<hostname>/` — optional host-specific configuration selected automatically
 
-- Account: `rustom`
-- Home: `/Users/rustom`
-- Platform: `aarch64-darwin`
+Stow conflicts stop setup without moving existing paths. Configuration stays in each tool's native format.
 
-Keep personal Git identity in ignored, machine-local configuration rather than tracked files.
+Inspect `./setup` before changing its behaviour. Keep personal Git identity, private SSH hosts, secrets, and machine-local shell settings in the local files described by the examples at the repository root.
 
 ## Scope
 
@@ -56,12 +55,11 @@ Do not rewrite readable configuration into another format without a clear benefi
 
 Validate the behaviour affected by the change:
 
-- Run `git diff --check`.
-- Run `bash -n` on changed shell scripts.
-- Run ShellCheck on changed shell scripts when available.
-- Run `stow --simulate` for changed Stow packages.
-- Run the affected tool's checks when available.
-- Confirm setup changes preserve existing paths as documented.
+- Always run `git diff --check`.
+- For shell changes, run `bash -n` and ShellCheck when available.
+- For Stow package changes, run `./setup --check`; do not run apply mode merely to validate.
+- Run the affected tool's native checks when available.
+- For setup changes, confirm conflicts leave existing paths untouched.
 
 Do not claim behaviour was tested unless the corresponding command was run successfully.
 
