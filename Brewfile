@@ -1,16 +1,7 @@
 tap "nikitabobko/tap"
 
-brew "fd"
-brew "fzf"
-brew "git-delta"
-brew "herdr"
-brew "hunk"
 brew "mise"
-brew "neovim"
-brew "ripgrep"
-brew "shellcheck"
 brew "stow"
-brew "tmux"
 brew "vim"
 
 cask "aerospace"

@@ -47,11 +47,11 @@ Stow packages are grouped by responsibility:
 
 Configurations use XDG paths where the application supports them, including Git, tmux, Vim, Neovim, Rustfmt, and terminal applications. Native paths remain for Bash, SSH, and Pi.dev where those tools expect them.
 
-`stow/common/.config/mise/config.toml` declares global runtimes. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned development runtimes; Homebrew owns OS-level applications and CLI tools. Avoid declaring the same tool in both.
+`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
 
-Homebrew owns the tools and GUI applications listed in `Brewfile`. Herdr and Hunk are Homebrew-managed. Pi.dev remains npm-managed.
+Homebrew owns the macOS tools and GUI applications listed in `Brewfile`. Hunk, Herdr, and delta are mise-managed through Aqua. Pi.dev remains npm-managed.
 
-Git identity stays machine-local. Copy `gitconfig.local.example` to `~/.gitconfig.local` and fill in your name and email.
+Machine-local settings stay outside the Stow packages. Copy `localrc.example` to `~/.localrc` for shell overrides, `gitconfig.local.example` to `~/.gitconfig.local` for Git identity, and `sshConfig.local.example` to `~/.ssh/config.local` for private SSH hosts. Keep secrets and machine-specific paths out of Git.
 
 ## Development
 

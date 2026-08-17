@@ -1,0 +1,6 @@
+# Machine-local SSH hosts and settings.
+# Copy this file to ~/.ssh/config.local and keep private hosts out of Git.
+
+# Host example
+#    HostName example.internal
+#    User your-user

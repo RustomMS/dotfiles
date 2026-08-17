@@ -27,6 +27,10 @@ function color_my_prompt
 color_my_prompt
 
 # Misc
+if [[ -x /opt/homebrew/bin/brew ]]; then
+   eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 export EDITOR=vim
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -87,8 +91,10 @@ if [[ "$-" = *i* ]]; then
    # use github.com/rupa/z for directory history and quick access
    [ -f ~/.local/z/z.sh ] && source ~/.local/z/z.sh
 
-   # Setup fzf for fuzzy seraching and auto complete
-   [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+   # Setup fzf for fuzzy searching and auto completion.
+   if command -v fzf >/dev/null 2>&1; then
+      eval "$(fzf --bash)"
+   fi
 
    # ls settings
    export LS_OPTIONS="--color=auto -F"

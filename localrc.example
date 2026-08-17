@@ -1,0 +1,5 @@
+# Machine-local shell settings.
+# Copy this file to ~/.localrc and edit it for this computer.
+# Keep secrets and host-specific paths here, not in the repository.
+
+# export SOME_MACHINE_SETTING="value"
