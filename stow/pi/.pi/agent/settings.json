@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-luna",
+  "defaultProvider": "openrouter",
+  "defaultModel": "openai/gpt-5.6-luna",
   "editorPaddingX": 2,
   "steeringMode": "one-at-a-time",
   "enableInstallTelemetry": false,
@@ -14,16 +14,13 @@
   ],
   "hideThinkingBlock": false,
   "enabledModels": [
-    "anthropic/claude-sonnet-4-6",
-    "anthropic/claude-haiku-4-5",
-    "anthropic/claude-opus-4-8",
-    "anthropic/claude-opus-5",
-    "anthropic/claude-opus-5-long-cache",
-    "openai-codex/gpt-5.6-luna",
-    "openai-codex/gpt-5.6-sol",
-    "openai-codex/gpt-5.6-terra",
-    "anthropic/claude-sonnet-5",
-    "anthropic/claude-fable-5"
+    "openrouter/openrouter/free",
+    "openrouter/google/gemma-4-31b-it:free",
+    "openrouter/cohere/north-mini-code:free",
+    "openrouter/nvidia/nemotron-3.5-lightning:free",
+    "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+    "openrouter/anthropic/claude-haiku-4.5",
+    "openrouter/openai/gpt-5.6-luna"
   ],
   "terminal": {
     "showTerminalProgress": true
