@@ -70,7 +70,8 @@ check_stow() {
   [[ -d "$STOW_DIR" ]] || fail "Stow directory is missing: $STOW_DIR"
 
   if ! stow_command --simulate --verbose=1 "${STOW_PACKAGES[@]}"; then
-    warn "Stow found conflicting home paths; resolve them or rerun setup to back them up"
+    warn "Stow found conflicting home paths; no files were changed"
+    warn "Resolve, remove, or intentionally adopt the conflicts, then rerun ./setup"
     STOW_FAILURES=$((STOW_FAILURES + 1))
   fi
 }
@@ -80,59 +81,9 @@ check_mise() {
   [[ -f "$STOW_DIR/common/.config/mise/config.toml" ]] || fail "mise configuration is missing"
 }
 
-managed_targets() {
-  local package package_dir source relative
-
-  for package in "${STOW_PACKAGES[@]}"; do
-    package_dir="$STOW_DIR/$package"
-    while IFS= read -r -d '' source; do
-      relative=${source#"$package_dir/"}
-      printf '%s\t%s\n' "$source" "$HOME/$relative"
-    done < <(find "$package_dir" \( -type f -o -type l \) -print0)
-  done
-}
-
-is_expected_stow_link() {
-  local source=$1
-  local target=$2
-  local link target_dir link_dir resolved expected
-
-  [[ -L "$target" ]] || return 1
-  link=$(readlink "$target")
-  expected="$(cd "$(dirname "$source")" && pwd -P)/$(basename "$source")"
-
-  if [[ "$link" = /* ]]; then
-    resolved=$link
-  else
-    target_dir=$(cd "$(dirname "$target")" && pwd -P)
-    link_dir=$(cd "$target_dir/$(dirname "$link")" && pwd -P)
-    resolved="$link_dir/$(basename "$link")"
-  fi
-
-  [[ "$resolved" == "$expected" ]]
-}
-
-backup_conflicts() {
-  local source target backup suffix
-
-  while IFS=$'\t' read -r source target; do
-    if [[ -e "$target" || -L "$target" ]] && ! is_expected_stow_link "$source" "$target"; then
-      backup="$target.rustom-backup"
-      suffix=1
-      while [[ -e "$backup" || -L "$backup" ]]; do
-        backup="$target.rustom-backup.$suffix"
-        suffix=$((suffix + 1))
-      done
-      printf 'Backing up %s to %s\n' "$target" "$backup"
-      mv "$target" "$backup"
-    fi
-  done < <(managed_targets)
-}
-
 apply_stow() {
-  if ! stow_command --simulate "${STOW_PACKAGES[@]}" >/dev/null; then
-    backup_conflicts
-    stow_command --simulate "${STOW_PACKAGES[@]}" >/dev/null || fail "Stow still reports conflicts after backups"
+  if ! stow_command --simulate --verbose=1 "${STOW_PACKAGES[@]}"; then
+    fail "Stow found conflicts; resolve, remove, or intentionally adopt them, then rerun ./setup"
   fi
 
   stow_command "${STOW_PACKAGES[@]}"

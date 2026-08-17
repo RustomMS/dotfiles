@@ -35,7 +35,7 @@ Apply the configuration:
 ./setup
 ```
 
-Setup is repeatable and non-destructive. It previews Stow changes first, backs up conflicting paths with a `.rustom-backup` suffix, then creates the links and installs mise tools. It does not use Stow's `--adopt` mode.
+Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically.
 
 ## Configuration
 

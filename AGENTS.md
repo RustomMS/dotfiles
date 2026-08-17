@@ -6,12 +6,12 @@ This repository contains Rustom's personal macOS configuration.
 
 - `./setup` is the installation entry point.
 - GNU Stow creates links from the repository's `stow/` packages into the home directory.
-- It preserves conflicting existing paths by renaming them with a `.rustom-backup` suffix.
+- It warns about conflicting existing paths and stops without moving them.
 - mise installs the declared language runtimes and project tools.
 - Homebrew installs the tools and GUI applications listed in `Brewfile`.
 - Configuration stays in each tool's native format.
 
-Inspect `./setup` before changing its behaviour. It changes the live home directory and has no dry-run mode.
+Inspect `./setup` before changing its behaviour. Use `./setup --check` to validate without changing the live home directory; apply mode changes it.
 
 ## Environment
 
@@ -50,7 +50,7 @@ Do not rewrite readable configuration into another format without a clear benefi
 - Do not incorporate untracked files without reviewing them first.
 - Do not run `./setup` unless the user asks to change the live home directory.
 - Never delete credentials, private keys, or user data.
-- Do not use Stow's `--adopt` option by default.
+- Do not use Stow's `--adopt` option automatically; use it only after explicitly reviewing the existing target.
 
 ## Validation
 
