@@ -26,9 +26,13 @@ function color_my_prompt
 }
 color_my_prompt
 
-# Misc
+# Homebrew must be on PATH before activating mise.
 if [[ -x /opt/homebrew/bin/brew ]]; then
    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if [[ -x /opt/homebrew/bin/mise ]]; then
+   eval "$(/opt/homebrew/bin/mise activate bash)"
 fi
 
 export EDITOR=nvim
@@ -43,10 +47,6 @@ fi
 
 if [[ -d "$HOME/.local/bin" ]]; then
    export PATH="$PATH:$HOME/.local/bin"
-fi
-
-if command -v mise >/dev/null 2>&1; then
-   eval "$(mise activate bash)"
 fi
 
 if  [[ -f $HOME/.aliases ]]; then
@@ -95,7 +95,10 @@ if [[ "$-" = *i* ]]; then
    shopt -s no_empty_cmd_completion
    shopt -s nocaseglob
 
-   export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+   # Keep prompt hooks local to this shell; child shells (for example Herdr panes)
+   # must not inherit terminal-specific functions from Ghostty.
+   export -n PROMPT_COMMAND 2>/dev/null || true
+   PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
    # use github.com/rupa/z for directory history and quick access
    [ -f ~/.local/z/z.sh ] && source ~/.local/z/z.sh
