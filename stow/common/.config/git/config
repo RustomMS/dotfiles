@@ -1,9 +1,11 @@
 [user]
-	name = Rustom Shareef
-
+    useConfigOnly = true
+[include]
+    path = ~/.gitconfig.local
+[github]
 	user = RustomMS
 [core]
-	editor = vim
+  editor = nvim
 	excludesfile = ~/.gitignore
 	autocrlf = input
 	whitespace = trailing-space,tab-in-indent,tabwidth=4
@@ -27,7 +29,8 @@
 	prune = true
 [merge]
 	mnemonicprefix = true
-	tool = nvimdiff2
+  tool = nvimdiff3
+  conflictStyle = zdiff3
 [diff]
 	mnemonicprefix = true
 	tool = nvimdiff
@@ -37,6 +40,14 @@
 	relativePaths = true
 [commit]
 	verbose = true
+[pager]
+  diff = hunk pager
+  show = hunk pager
+  log = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
 [alias]
 	wt = worktree
 	co = checkout

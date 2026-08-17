@@ -1,0 +1,39 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-luna",
+  "editorPaddingX": 2,
+  "steeringMode": "one-at-a-time",
+  "enableInstallTelemetry": false,
+  "defaultThinkingLevel": "high",
+  "theme": "everforest",
+  "packages": [
+    "npm:pi-vim@0.3.2",
+    "npm:pi-terminal-signals@0.1.0",
+    "npm:@aliou/pi-guardrails@0.17.0",
+    "npm:pi-subagents"
+  ],
+  "hideThinkingBlock": false,
+  "enabledModels": [
+    "anthropic/claude-sonnet-4-6",
+    "anthropic/claude-haiku-4-5",
+    "anthropic/claude-opus-4-8",
+    "anthropic/claude-opus-5",
+    "anthropic/claude-opus-5-long-cache",
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-terra",
+    "anthropic/claude-sonnet-5",
+    "anthropic/claude-fable-5"
+  ],
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "treeFilterMode": "user-only",
+  "followUpMode": "one-at-a-time",
+  "lastChangelogVersion": "0.84.2",
+  "tuiMode": "regular",
+  "enableSkillCommands": true,
+  "transport": "auto",
+  "httpIdleTimeoutMs": 300000,
+  "showCacheMissNotices": true
+}

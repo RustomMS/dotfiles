@@ -1,0 +1,33 @@
+onboarding = false
+# Herdr — terminal workspace manager. Full reference: https://herdr.dev/docs/configuration/
+# Print defaults with: herdr --default-config
+# Apply edits to a running server with: herdr server reload-config
+
+[keys]
+# ctrl+a to match long-standing tmux muscle memory.
+# Trade-off: panes no longer see ctrl+a as readline beginning-of-line.
+prefix = "ctrl+a"
+
+previous_agent = "prefix+,"
+next_agent = "prefix+."
+last_pane = "prefix+;"
+
+# Navigate-mode (prefix+w): shift+j/k moves between workspaces
+navigate_workspace_up = ["up", "shift+k", "p"]
+navigate_workspace_down = ["down", "shift+j", "n"]
+
+[theme]
+name = "gruvbox"
+
+auto_switch = false
+[ui]
+agent_panel_sort = "spaces"
+tab_bar_position = "bottom"
+
+show_agent_labels_on_pane_borders = false
+[ui.toast]
+delivery = "terminal"
+
+[experimental]
+pane_history = true
+switch_ascii_input_source_in_prefix = true

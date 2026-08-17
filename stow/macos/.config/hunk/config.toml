@@ -1,0 +1,9 @@
+theme = "auto"
+mode = "stack"
+line_numbers = true
+wrap_lines = false
+menu_bar = true
+agent_notes = false
+exclude_untracked = false
+prompt_save_view_preferences = false
+transparent_background = false

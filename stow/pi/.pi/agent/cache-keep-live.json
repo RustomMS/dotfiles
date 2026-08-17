@@ -1,0 +1,41 @@
+{
+  "jitterPercent": {
+    "min": 0.85,
+    "max": 0.92
+  },
+  "retry": {
+    "maxAttempts": 2,
+    "backoffSeconds": {
+      "min": 3,
+      "max": 7
+    }
+  },
+  "providers": {
+    "anthropic": {
+      "minPromptTokens": 4096,
+      "defaults": {
+        "ttlMinutes": 5,
+        "maxKeepalives": 9,
+        "cacheRetention": "short"
+      },
+      "models": {
+        "claude-opus-5-long-cache": {
+          "ttlMinutes": 60,
+          "maxKeepalives": 9,
+          "cacheRetention": "long",
+          "upstreamModel": "claude-opus-5"
+        }
+      }
+    },
+    "openai-codex": {
+      "minPromptTokens": 1024,
+      "models": {
+        "gpt-5.6-*": {
+          "ttlMinutes": 30,
+          "maxKeepalives": 5,
+          "cacheRetention": "short"
+        }
+      }
+    }
+  }
+}

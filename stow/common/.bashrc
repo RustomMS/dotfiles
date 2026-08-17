@@ -28,29 +28,25 @@ color_my_prompt
 
 # Misc
 export EDITOR=vim
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
-if  [[ -d /usr/local/bin ]]; then
+if [[ -d /usr/local/bin ]]; then
    export PATH="$PATH:/usr/local/bin"
 fi
 
-if  [[ -d $HOME/dotfiles/bin ]]; then
-   export PATH="$PATH:$HOME/dotfiles/bin"
+if [[ -d "$HOME/.local/bin" ]]; then
+   export PATH="$PATH:$HOME/.local/bin"
 fi
 
-if  [[ -d $HOME/.local/bin ]]; then
-   export PATH="$PATH:$HOME/.local/bin"
+if command -v mise >/dev/null 2>&1; then
+   eval "$(mise activate bash)"
 fi
 
 if  [[ -f $HOME/.aliases ]]; then
    . "$HOME/.aliases"
-fi
-
-if  [[ -f $HOME/dotfiles/bashrc.$HOSTNAME ]]; then
-   . "$HOME/dotfiles/bashrc.$HOSTNAME"
-fi
-
-if  [[ -f $HOME/.localrc ]]; then
-   . "$HOME/.localrc"
 fi
 
 if [ -f ~/.bash_aliases ]; then
@@ -69,19 +65,22 @@ if [[ "$-" = *i* ]]; then
    # History settings
    export HISTTIMEFORMAT="%y-%m-%d %T "
    export HISTCONTROL=ignoredups
-   export HISTSIZE=100000
-   export HISTFILESIZE=100000
+   export HISTSIZE=500000
+   export HISTFILESIZE=15000000
    export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
    shopt -s autocd
    shopt -s cdspell
    shopt -s checkjobs
    shopt -s checkwinsize
    shopt -s cmdhist
+   shopt -s direxpand
    shopt -s dirspell
    shopt -s dotglob
    shopt -s extglob
    shopt -s globstar
    shopt -s histappend
+   shopt -s no_empty_cmd_completion
+   shopt -s nocaseglob
 
    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
@@ -92,7 +91,6 @@ if [[ "$-" = *i* ]]; then
    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
    # ls settings
-   [ -f ~/dotfiles/dircolors.wsl ] && eval "$(dircolors ~/dotfiles/dircolors.wsl)"
    export LS_OPTIONS="--color=auto -F"
    export BLOCK_SIZE=human-readable
 
@@ -115,4 +113,9 @@ if [[ "$-" = *i* ]]; then
    export LESS_TERMCAP_ZO=$(tput ssupm)
    export LESS_TERMCAP_ZW=$(tput rsupm)
    export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
+fi
+
+# Keep machine-local overrides out of this repository.
+if [[ -r "$HOME/.localrc" ]]; then
+   . "$HOME/.localrc"
 fi

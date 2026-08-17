@@ -1,82 +1,192 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-ReplaceAndKeepCopy()
-{
-    newFile=$1
-    origFile=$2
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+BREWFILE="$REPO/Brewfile"
+STOW_DIR="$REPO/stow"
+STOW_PACKAGES=(common macos pi)
+CHECK_ONLY=false
+INSTALL_BREW=false
+STOW_FAILURES=0
+BREW_FAILURES=0
 
-   # Determine the relative path to newFile from origFile's directory
-   common_part="$(dirname "$origFile")/"
-   back=""
-   while [ "${newFile#"$common_part"}" = "${newFile}" ]; do
-       common_part=$(dirname "$common_part")
-       back="../${back}"
-   done
+usage() {
+  cat <<'EOF'
+Usage: ./setup [--check] [--brew]
 
-   symSource="${back}${newFile#"$common_part"}"
-
-   if [ ! -e "$origFile" ]
-   then
-       echo "$origFile not exist"
-       ln -f -s "$symSource" "$origFile"
-       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
-   elif [ ! "$newFile" -ef "$origFile" ]
-   then
-       echo "Move and replace $origFile with $newFile"
-       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
-       mv "$origFile" "$origFile.rustom-backup"
-       ln -s "$symSource" "$origFile"
-   else
-       echo "No action for $origFile and $newFile"
-       echo "Current symlink: $(readlink "$origFile"); Expected: $symSource"
-   fi
+  --check  validate Stow, mise, and the environment without changing files
+  --brew   install applications and tools from Brewfile, without stowing files
+EOF
 }
 
-ReplaceAndKeepCopy "$HOME/dotfiles/bash_aliases" "$HOME/.bash_aliases"
-ReplaceAndKeepCopy "$HOME/dotfiles/bashrc" "$HOME/.bashrc"
-ReplaceAndKeepCopy "$HOME/dotfiles/tmux.conf" "$HOME/.tmux.conf"
-ReplaceAndKeepCopy "$HOME/dotfiles/vimrc" "$HOME/.vimrc"
-ReplaceAndKeepCopy "$HOME/dotfiles/vim/coc-settings.json" "$HOME/.vim/coc-settings.json"
-ReplaceAndKeepCopy "$HOME/dotfiles/rustfmt.toml" "$HOME/.config/rustfmt/rustfmt.toml"
-ReplaceAndKeepCopy "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
-ReplaceAndKeepCopy "$HOME/dotfiles/inputrc" "$HOME/.inputrc"
-ReplaceAndKeepCopy "$HOME/dotfiles/editrc" "$HOME/.editrc"
-ReplaceAndKeepCopy "$HOME/dotfiles/sshConfig" "$HOME/.ssh/config"
-chmod 600 "$HOME/dotfiles/sshConfig"
-mkdir -p "$HOME/.vim/syntax"
+fail() {
+  printf 'setup: ERROR: %s\n' "$*" >&2
+  exit 1
+}
 
-mkdir -p "$HOME/.vim/colors"
-if [ ! -e "$HOME/.vim/colors/gruvbox.vim" ] ; then
-    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/morhetz/gruvbox/master/colors/gruvbox.vim
-fi
-if [ ! -e "$HOME/.vim/colors/onehalfdark.vim" ] ; then
-    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalfdark.vim
-fi
-if [ ! -e "$HOME/.vim/colors/onehalflight.vim" ] ; then
-    wget  -P "$HOME/.vim/colors/" https://raw.githubusercontent.com/sonph/onehalf/master/vim/colors/onehalflight.vim
+warn() {
+  printf 'setup: WARNING: %s\n' "$*" >&2
+}
+
+require_command() {
+  local command_name=$1
+  command -v "$command_name" >/dev/null 2>&1 || fail "$command_name is not installed"
+}
+
+check_homebrew_bundle() {
+  if ! command -v brew >/dev/null 2>&1; then
+    warn "Homebrew is not installed; skipping Brewfile check"
+    return 0
+  fi
+
+  [[ -f "$BREWFILE" ]] || fail "Brewfile is missing: $BREWFILE"
+
+  if ! HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_ENV_HINTS=1 brew bundle check --file="$BREWFILE"; then
+    warn "Homebrew bundle is not complete; run ./setup --brew"
+    BREW_FAILURES=$((BREW_FAILURES + 1))
+  fi
+}
+
+install_homebrew_bundle() {
+  require_command brew
+  [[ -f "$BREWFILE" ]] || fail "Brewfile is missing: $BREWFILE"
+
+  printf 'Installing applications and tools from %s...\n' "$BREWFILE"
+  HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --file="$BREWFILE"
+  printf 'Homebrew setup complete.\n'
+}
+
+stow_command() {
+  stow --no-folding --target="$HOME" --dir="$STOW_DIR" "$@"
+}
+
+check_stow() {
+  require_command stow
+  [[ -d "$STOW_DIR" ]] || fail "Stow directory is missing: $STOW_DIR"
+
+  if ! stow_command --simulate --verbose=1 "${STOW_PACKAGES[@]}"; then
+    warn "Stow found conflicting home paths; resolve them or rerun setup to back them up"
+    STOW_FAILURES=$((STOW_FAILURES + 1))
+  fi
+}
+
+check_mise() {
+  require_command mise
+  [[ -f "$STOW_DIR/common/.config/mise/config.toml" ]] || fail "mise configuration is missing"
+}
+
+managed_targets() {
+  local package package_dir source relative
+
+  for package in "${STOW_PACKAGES[@]}"; do
+    package_dir="$STOW_DIR/$package"
+    while IFS= read -r -d '' source; do
+      relative=${source#"$package_dir/"}
+      printf '%s\t%s\n' "$source" "$HOME/$relative"
+    done < <(find "$package_dir" \( -type f -o -type l \) -print0)
+  done
+}
+
+is_expected_stow_link() {
+  local source=$1
+  local target=$2
+  local link target_dir link_dir resolved expected
+
+  [[ -L "$target" ]] || return 1
+  link=$(readlink "$target")
+  expected="$(cd "$(dirname "$source")" && pwd -P)/$(basename "$source")"
+
+  if [[ "$link" = /* ]]; then
+    resolved=$link
+  else
+    target_dir=$(cd "$(dirname "$target")" && pwd -P)
+    link_dir=$(cd "$target_dir/$(dirname "$link")" && pwd -P)
+    resolved="$link_dir/$(basename "$link")"
+  fi
+
+  [[ "$resolved" == "$expected" ]]
+}
+
+backup_conflicts() {
+  local source target backup suffix
+
+  while IFS=$'\t' read -r source target; do
+    if [[ -e "$target" || -L "$target" ]] && ! is_expected_stow_link "$source" "$target"; then
+      backup="$target.rustom-backup"
+      suffix=1
+      while [[ -e "$backup" || -L "$backup" ]]; do
+        backup="$target.rustom-backup.$suffix"
+        suffix=$((suffix + 1))
+      done
+      printf 'Backing up %s to %s\n' "$target" "$backup"
+      mv "$target" "$backup"
+    fi
+  done < <(managed_targets)
+}
+
+apply_stow() {
+  if ! stow_command --simulate "${STOW_PACKAGES[@]}" >/dev/null; then
+    backup_conflicts
+    stow_command --simulate "${STOW_PACKAGES[@]}" >/dev/null || fail "Stow still reports conflicts after backups"
+  fi
+
+  stow_command "${STOW_PACKAGES[@]}"
+}
+
+while (($#)); do
+  case "$1" in
+    --check)
+      CHECK_ONLY=true
+      ;;
+    --brew)
+      INSTALL_BREW=true
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      printf 'setup: ERROR: unknown option: %s\n' "$1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+if (($#)); then
+  printf 'setup: ERROR: unexpected argument: %s\n' "$1" >&2
+  usage >&2
+  exit 2
 fi
 
-if [ ! -e "$HOME/.local" ] ; then
-    mkdir -p "$HOME/.local"
+[[ "$(uname -s)" == "Darwin" ]] || fail "this profile supports macOS only"
+[[ "$(uname -m)" == "arm64" ]] || fail "this profile supports Apple Silicon only"
+
+if [[ "$INSTALL_BREW" == true ]]; then
+  if [[ "$CHECK_ONLY" == true ]]; then
+    check_homebrew_bundle
+    (( BREW_FAILURES == 0 )) || fail "Homebrew bundle check failed"
+    printf 'Homebrew check complete. No files or applications were changed.\n'
+  else
+    install_homebrew_bundle
+  fi
+  exit 0
 fi
 
-# if [ ! -e "$HOME/local" ] ; then
-    # ln -s "$HOME/.local" "$HOME/local"
-# fi
+check_stow
+check_mise
 
-if [ ! -e "$HOME/.local/z" ] ; then
-    # get z from rupa´s repo and install at "$HOME/.local/z"
-    mkdir -p "$HOME/.local/z"
-    git clone --depth 1 https://github.com/rupa/z "$HOME/.local/z"
+if [[ "$CHECK_ONLY" == true ]]; then
+  (( STOW_FAILURES == 0 )) || fail "Stow check failed"
+  printf 'Check complete. No files or applications were changed.\n'
+  exit 0
 fi
 
-if [ ! -e "$HOME/.local/fzf" ] ; then
-    mkdir -p "$HOME/.local/fzf"
-    git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.local/fzf"
-    "$HOME/.local/fzf/install" --no-update-rc --no-zsh --no-fish --completion --key-bindings
-fi
-
-if [ ! -e ~/.vim/autoload/plug.vim ] ; then
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+apply_stow
+mise install
+printf 'Dotfiles stowed and mise tools installed.\n'

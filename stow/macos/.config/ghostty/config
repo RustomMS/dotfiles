@@ -1,0 +1,7 @@
+command = "/opt/homebrew/bin/bash -l"
+theme = "Everforest Dark Hard"
+font-family = FiraCode Nerd Font Mono
+font-size = 14
+bell-features = attention,title,system,audio
+macos-option-as-alt = true
+auto-update-channel = stable

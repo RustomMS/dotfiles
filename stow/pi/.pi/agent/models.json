@@ -1,0 +1,32 @@
+{
+  "providers": {
+    "anthropic": {
+      "models": [
+        {
+          "id": "claude-opus-5-long-cache",
+          "name": "Claude Opus 5 (1h cache)",
+          "api": "anthropic-messages",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "xhigh": "xhigh",
+            "max": "max"
+          },
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 128000,
+          "cost": {
+            "input": 5,
+            "output": 25,
+            "cacheRead": 0.5,
+            "cacheWrite": 10
+          },
+          "compat": {
+            "forceAdaptiveThinking": true,
+            "supportsLongCacheRetention": true,
+            "supportsStrictTools": true
+          }
+        }
+      ]
+    }
+  }
+}
