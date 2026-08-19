@@ -3,3 +3,8 @@
   source = "home/.config/tmux",
   mode = "symlink-each",
 }
+
+"~/.config/git" = {
+  source = "home/.config/git",
+  mode = "symlink-each",
+}
