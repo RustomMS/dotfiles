@@ -10,7 +10,9 @@
     "npm:pi-vim@0.3.2",
     "npm:pi-terminal-signals@0.1.0",
     "npm:@aliou/pi-guardrails@0.17.0",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-web-access"
   ],
   "hideThinkingBlock": false,
   "enabledModels": [
