@@ -28,3 +28,8 @@
   source = "home/.config/vim",
   mode = "symlink-each",
 }
+
+"~/.config/nvim" = {
+  source = "home/.config/nvim",
+  mode = "symlink-each",
+}
