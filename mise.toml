@@ -8,3 +8,23 @@
   source = "home/.config/git",
   mode = "symlink-each",
 }
+
+"~/.config/herdr" = {
+  source = "home/.config/herdr",
+  mode = "symlink-each",
+}
+
+"~/.config/hunk" = {
+  source = "home/.config/hunk",
+  mode = "symlink-each",
+}
+
+"~/.config/rustfmt" = {
+  source = "home/.config/rustfmt",
+  mode = "symlink-each",
+}
+
+"~/.config/vim" = {
+  source = "home/.config/vim",
+  mode = "symlink-each",
+}
