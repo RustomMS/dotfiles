@@ -47,8 +47,8 @@ The repository is migrating incrementally from Stow to Mise. tmux is now managed
 
 Stow packages are grouped by responsibility:
 
-- `home/` — Mise-managed home configuration, currently including tmux
-- `stow/common/` — remaining shell, Git, Vim, Neovim, SSH, and shared tools
+- `home/` — Mise-managed home configuration, currently including tmux, Git, Herdr, Hunk, Rustfmt, Vim, and Neovim
+- `stow/common/` — remaining shell, SSH, and shared tools
 - `stow/macos/` — AeroSpace and terminal applications
 - `stow/pi/` — Pi.dev configuration; `setup` links only its configuration files and leaves Pi state under `~/.pi/agent` untouched
 - `stow/host-<hostname>/` — optional host-specific files for the current machine
@@ -57,7 +57,7 @@ When a matching `stow/host-<hostname>/` package exists, `setup` stows it automat
 
 Configurations use XDG paths where the application supports them, including Git, tmux, Vim, Neovim, Rustfmt, and terminal applications. Native paths remain for Bash, SSH, and Pi.dev where those tools expect them.
 
-`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares Mise-managed bootstrap resources; its first migrated resource is tmux. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
+`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares Mise-managed bootstrap resources. The migrated XDG configuration currently includes tmux, Git, Herdr, Hunk, Rustfmt, Vim, and Neovim. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
 
 Homebrew owns the macOS tools and GUI applications listed in `Brewfile`. Hunk, Herdr, and delta are mise-managed through Aqua. Pi.dev remains npm-managed.
 
