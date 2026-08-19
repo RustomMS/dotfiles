@@ -1,12 +1,12 @@
 # Personal Dotfiles
 
-Personal macOS configuration managed with GNU Stow, mise, and Homebrew.
+Personal macOS configuration migrating from GNU Stow to mise bootstrap, with Homebrew.
 
 ## Requirements
 
 - macOS on Apple Silicon
-- GNU Stow
-- mise
+- GNU Stow for the remaining configuration
+- mise for migrated configuration and tools
 - Homebrew
 
 ## Setup
@@ -29,19 +29,26 @@ Check the Homebrew bundle without installing or updating anything:
 ./setup --check --brew
 ```
 
-Apply the configuration:
+Apply the remaining Stow-managed configuration:
 
 ```bash
 ./setup
 ```
 
-Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically. Pi configuration files are linked individually; authentication, model cache, sessions, and skills remain in `~/.pi/agent`. Existing Pi configuration files are backed up under `~/.pi-config-backups` before linking.
+Inspect the migrated Mise-managed configuration:
+
+```bash
+mise bootstrap dotfiles status
+```
+
+The repository is migrating incrementally from Stow to Mise. tmux is now managed by Mise; the remaining configuration still uses `./setup`. Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically. Pi configuration files are linked individually; authentication, model cache, sessions, and skills remain in `~/.pi/agent`. Existing Pi configuration files are backed up under `~/.pi-config-backups` before linking.
 
 ## Configuration
 
 Stow packages are grouped by responsibility:
 
-- `stow/common/` — shell, Git, tmux, Vim, Neovim, SSH, and shared tools
+- `home/` — Mise-managed home configuration, currently including tmux
+- `stow/common/` — remaining shell, Git, Vim, Neovim, SSH, and shared tools
 - `stow/macos/` — AeroSpace and terminal applications
 - `stow/pi/` — Pi.dev configuration; `setup` links only its configuration files and leaves Pi state under `~/.pi/agent` untouched
 - `stow/host-<hostname>/` — optional host-specific files for the current machine
@@ -50,7 +57,7 @@ When a matching `stow/host-<hostname>/` package exists, `setup` stows it automat
 
 Configurations use XDG paths where the application supports them, including Git, tmux, Vim, Neovim, Rustfmt, and terminal applications. Native paths remain for Bash, SSH, and Pi.dev where those tools expect them.
 
-`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
+`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares Mise-managed bootstrap resources; its first migrated resource is tmux. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
 
 Homebrew owns the macOS tools and GUI applications listed in `Brewfile`. Hunk, Herdr, and delta are mise-managed through Aqua. Pi.dev remains npm-managed.
 
