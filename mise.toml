@@ -1,0 +1,5 @@
+[dotfiles]
+"~/.config/tmux" = {
+  source = "home/.config/tmux",
+  mode = "symlink-each",
+}
