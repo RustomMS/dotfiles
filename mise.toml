@@ -63,3 +63,8 @@
   source = "home/.pi/agent",
   mode = "symlink-each",
 }
+
+"~/.bash_aliases" = {
+  source = "home/.bash_aliases",
+  mode = "symlink",
+}
