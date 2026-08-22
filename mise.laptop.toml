@@ -6,3 +6,18 @@
   source = "home/.bashrc.laptop",
   mode = "symlink",
 }
+
+"~/.config/aerospace" = {
+  source = "home/.config/aerospace",
+  mode = "symlink-each",
+}
+
+"~/.config/ghostty" = {
+  source = "home/.config/ghostty",
+  mode = "symlink-each",
+}
+
+"~/.config/wezterm" = {
+  source = "home/.config/wezterm",
+  mode = "symlink-each",
+}
