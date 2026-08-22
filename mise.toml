@@ -53,3 +53,8 @@
   source = "home/.inputrc",
   mode = "symlink",
 }
+
+"~/.ssh/config" = {
+  source = "home/.ssh/config",
+  mode = "symlink",
+}
