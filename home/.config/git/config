@@ -6,7 +6,7 @@
 	user = RustomMS
 [core]
   editor = nvim
-	excludesfile = ~/.gitignore
+  excludesfile = ~/.config/git/ignore
 	autocrlf = input
 	whitespace = trailing-space,tab-in-indent,tabwidth=4
 [color]
