@@ -41,23 +41,22 @@ Inspect the migrated Mise-managed configuration:
 mise bootstrap dotfiles status
 ```
 
-The repository is migrating incrementally from Stow to Mise. tmux is now managed by Mise; the remaining configuration still uses `./setup`. Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically. Pi configuration files are linked individually; authentication, model cache, sessions, and skills remain in `~/.pi/agent`. Existing Pi configuration files are backed up under `~/.pi-config-backups` before linking.
+The repository is migrating incrementally from Stow to Mise. Mise now manages the migrated configuration listed below; the remaining configuration still uses `./setup`. Setup is repeatable and non-destructive. It previews Stow changes first, warns about conflicts, and stops without moving existing paths. Resolve, remove, or intentionally adopt conflicts yourself, then rerun `./setup`. It does not use Stow's `--adopt` mode automatically. Pi configuration is managed additively by Mise while authentication, sessions, history, and other user state remain in `~/.pi/agent`.
 
 ## Configuration
 
 Stow packages are grouped by responsibility:
 
-- `home/` — Mise-managed home configuration, currently including tmux, Git, Herdr, Hunk, Rustfmt, Vim, and Neovim
-- `stow/common/` — remaining shell, SSH, and shared tools
-- `stow/macos/` — AeroSpace and terminal applications
-- `stow/pi/` — Pi.dev configuration; `setup` links only its configuration files and leaves Pi state under `~/.pi/agent` untouched
+- `home/` — Mise-managed home configuration, including XDG config, Bash, SSH, local utilities, and Pi configuration
+- `stow/common/` — remaining shared configuration, currently aliases, Mise's global tool config, and macOS-independent leftovers
+- `stow/macos/` — remaining AeroSpace and terminal application configuration
 - `stow/host-<hostname>/` — optional host-specific files for the current machine
 
-When a matching `stow/host-<hostname>/` package exists, `setup` stows it automatically. Host packages can provide `.bashrc.<hostname>` without competing with the shared `.bashrc`. Keep secrets and private paths in ignored local files instead.
+Named Mise environments own machine-specific resources; the current environment is `laptop`. Keep secrets and private paths in ignored local files instead.
 
 Configurations use XDG paths where the application supports them, including Git, tmux, Vim, Neovim, Rustfmt, and terminal applications. Native paths remain for Bash, SSH, and Pi.dev where those tools expect them.
 
-`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares Mise-managed bootstrap resources. The migrated XDG configuration currently includes tmux, Git, Herdr, Hunk, Rustfmt, Vim, and Neovim. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes and portable binaries; Homebrew owns macOS applications and CLI tools with native integration. Avoid declaring the same tool in both.
+`stow/common/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares Mise-managed bootstrap resources, and `mise.laptop.toml` declares laptop-specific resources. Project-specific versions belong in each project's own `mise.toml`. mise owns versioned runtimes, portable binaries, and migrated configuration; Homebrew owns macOS applications and GUI casks. Avoid declaring the same tool in both.
 
 Homebrew owns the macOS tools and GUI applications listed in `Brewfile`. Hunk, Herdr, and delta are mise-managed through Aqua. Pi.dev remains npm-managed.
 
@@ -70,7 +69,7 @@ Run the checks before committing:
 ```bash
 bash -n setup
 shellcheck setup stow/common/.bashrc stow/common/.bash_aliases
-stow --simulate --no-folding --target "$HOME" --dir "$PWD/stow" common macos pi
+stow --simulate --no-folding --target "$HOME" --dir "$PWD/stow" common macos
 git diff --check
 ```
 
