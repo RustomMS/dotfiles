@@ -68,7 +68,7 @@ Run the checks before committing:
 
 ```bash
 bash -n setup
-shellcheck setup stow/common/.bashrc stow/common/.bash_aliases
+shellcheck setup home/.bashrc home/.bashrc.laptop stow/common/.bash_aliases
 stow --simulate --no-folding --target "$HOME" --dir "$PWD/stow" common macos
 git diff --check
 ```
