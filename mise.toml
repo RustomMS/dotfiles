@@ -33,3 +33,8 @@
   source = "home/.config/nvim",
   mode = "symlink-each",
 }
+
+"~/.bashrc" = {
+  source = "home/.bashrc",
+  mode = "symlink",
+}

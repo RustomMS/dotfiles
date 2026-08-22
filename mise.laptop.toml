@@ -1,2 +1,8 @@
 [bootstrap.packages]
 "brew:vim" = "latest"
+
+[dotfiles]
+"~/.bashrc.local" = {
+  source = "home/.bashrc.laptop",
+  mode = "symlink",
+}
