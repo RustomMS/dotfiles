@@ -38,3 +38,8 @@
   source = "home/.bashrc",
   mode = "symlink",
 }
+
+"~/.local/bin" = {
+  source = "home/.local/bin",
+  mode = "symlink-each",
+}
