@@ -58,3 +58,8 @@
   source = "home/.ssh/config",
   mode = "symlink",
 }
+
+"~/.pi/agent" = {
+  source = "home/.pi/agent",
+  mode = "symlink-each",
+}
