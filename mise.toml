@@ -43,3 +43,13 @@
   source = "home/.local/bin",
   mode = "symlink-each",
 }
+
+"~/.editrc" = {
+  source = "home/.editrc",
+  mode = "symlink",
+}
+
+"~/.inputrc" = {
+  source = "home/.inputrc",
+  mode = "symlink",
+}
