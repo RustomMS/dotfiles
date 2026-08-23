@@ -1,3 +1,6 @@
+[bootstrap.brew]
+adopt = true
+
 [bootstrap.packages]
 "brew:vim" = "latest"
 "brew-cask:betterdisplay" = "latest"
