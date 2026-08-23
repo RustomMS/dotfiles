@@ -68,3 +68,8 @@
   source = "home/.bash_aliases",
   mode = "symlink",
 }
+
+"~/.config/mise/config.toml" = {
+  source = "home/.config/mise/config.toml",
+  mode = "symlink",
+}
