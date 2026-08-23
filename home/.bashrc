@@ -49,10 +49,6 @@ if [[ -d "$HOME/.local/bin" ]]; then
    export PATH="$PATH:$HOME/.local/bin"
 fi
 
-if  [[ -f $HOME/.aliases ]]; then
-   . "$HOME/.aliases"
-fi
-
 if [[ -r "$HOME/.bashrc.local" ]]; then
    . "$HOME/.bashrc.local"
 fi
@@ -70,6 +66,11 @@ if  [[ -f "$HOME/.cargo/env" ]]; then
 fi
 
 if [[ "$-" = *i* ]]; then
+   # Use the existing local z installation when available.
+   if [[ -r "$HOME/.local/z/z.sh" ]]; then
+      source "$HOME/.local/z/z.sh"
+   fi
+
    #export TERM=xterm
    #export TERM=xterm-256color
    #export TERM=screen-256color
@@ -98,9 +99,6 @@ if [[ "$-" = *i* ]]; then
    # must not inherit terminal-specific functions from Ghostty.
    export -n PROMPT_COMMAND 2>/dev/null || true
    PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
-   # use github.com/rupa/z for directory history and quick access
-   [ -f ~/.local/z/z.sh ] && source ~/.local/z/z.sh
 
    # Setup fzf for fuzzy searching and auto completion.
    if command -v fzf >/dev/null 2>&1; then

@@ -67,9 +67,9 @@
 	amend = commit --amend
 	d = diff
 	ds = diff --staged
-	prrbi = "!git rebase -i $(git merge-base HEAD origin/master)"
-	prdiff = "!git diff $(git merge-base HEAD origin/master)"
-	prdifftool = "!git difftool $(git merge-base HEAD origin/master)"
+  prrbi = "!git rebase -i $(git merge-base HEAD origin/HEAD)"
+  prdiff = "!git diff $(git merge-base HEAD origin/HEAD)"
+  prdifftool = "!git difftool $(git merge-base HEAD origin/HEAD)"
 	pullr = pull --rebase
 	dag = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s%Cgreen(%cr) %C(magenta)<%an>%Creset' --abbrev-commit --date=relative
 	list = show --pretty=format:'' --name-only
@@ -88,8 +88,7 @@
 	zap = fetch -p
 	day = log --reverse --no-merges --branches=* --date=local --since=midnight --author=\"$(git config --get user.name)\"
 	delete-merged-branches = "!f() { git checkout --quiet main && git branch --merged | grep --invert-match '\\*' | xargs -n 1 git branch --delete; git checkout --quiet @{-1}; }; f"
-	pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/head:pr/$1 && git switch pr/$1; }; f"
-	pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+  pr = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$1/from:pr/$1 && git switch pr/$1; }; f"
 	save = "!git add --update && git commit --edit --message 'wip: '"
 	# Pushes to tracking branch (note assumes remote is called origin)
 	push-tracking = "!f() { remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name --short @{upstream} | sed 's#^origin/##'); git push origin HEAD:$remote_branch; }; f"
@@ -103,16 +102,16 @@
 	dbranch = "!git branch -D $1 ; git push --delete origin `echo $1 | sed -e 's@remotes/origin/@@'` ; echo \"Deleted branch \""
 	# Show when the current HEAD was created
 	when    = show --no-patch --date=format:%F --format=\"%cd %cr\"
-	# List the current branches that have been merged into the master branch
-	bmerged = "!git branch -a --merged origin/master | egrep -v -e '(HEAD|master|hotfix/)' || exit 0"
+  # List the current branches that have been merged into the default branch
+  bmerged = "!git branch -a --merged origin/HEAD | egrep -v -e '(HEAD|main|hotfix/)' || exit 0"
 	# List merged branches and when they were last changed
 	blist = "!f() { for i in `git bmerged` ; do printf \"%s %s\\n\" \"`git when ${i}`\" \"${i}\" ; done | sort -r; }; f"
 	# Trim the repository
 	trim = "!git reflog expire --expire=now --all && git gc --prune=now"
 	# Delete merged branches
 	dmerged = "!f() { for i in `git bmerged` ; do git dbranch ${i} ; done ; }; f"
-	# Update master branch with origin master
-	update-master = !git fetch origin master:master
+  # Update the default branch from origin
+  update-default = !git fetch origin 'HEAD:refs/remotes/origin/HEAD'
 	hide = update-index --assume-unchanged
 	unhide = update-index --no-assume-unchanged
 	hidden = !git ls-files -v | grep \"^[a-z]\"
