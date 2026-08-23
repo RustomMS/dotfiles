@@ -16,7 +16,7 @@ Mise manages the repository's tools, dotfiles, shell configuration, host-specifi
 
 Configuration sources live under `home/` and use each tool's native format. `mise.toml` contains common bootstrap declarations; `mise.laptop.toml` contains laptop-specific declarations; `.miserc.toml` selects the laptop environment by default; and `home/.config/mise/config.toml` contains global workstation tools.
 
-Inspect `setup` before changing its behaviour. Keep personal Git identity, private SSH hosts, secrets, and machine-local shell settings in the local files described by the examples at the repository root.
+Inspect `setup` before changing its behaviour. Keep personal Git identity, private SSH hosts, secrets, and machine-local shell settings in the local example files beside their expected targets: `home/.config/git/config.local.example`, `home/.ssh/config.local.example`, and `home/.localrc.example`.
 
 ## Scope
 

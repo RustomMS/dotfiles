@@ -50,7 +50,7 @@ Mise manages the workstation configuration and the supported Homebrew casks thro
 
 `home/.config/mise/config.toml` declares global runtimes and portable developer tools. The repository-root `mise.toml` declares common Mise-managed bootstrap resources, and `mise.laptop.toml` declares laptop-specific resources. Project-specific versions belong in each project's own `mise.toml`. Mise owns versioned runtimes, portable binaries, configuration, and supported casks; Homebrew owns only the AeroSpace exception. Avoid declaring the same application in both.
 
-Machine-local settings stay outside the repository. Copy `localrc.example` to `~/.localrc` for shell overrides, `gitconfig.local.example` to `~/.config/git/config.local` for Git identity, and `sshConfig.local.example` to `~/.ssh/config.local` for private SSH hosts. Keep secrets and machine-specific paths out of Git.
+Machine-local settings stay outside the repository. Copy `home/.localrc.example` to `~/.localrc` for shell overrides, `home/.config/git/config.local.example` to `~/.config/git/config.local` for Git identity, and `home/.ssh/config.local.example` to `~/.ssh/config.local` for private SSH hosts. Keep secrets and machine-specific paths out of Git.
 
 ## Development
 
