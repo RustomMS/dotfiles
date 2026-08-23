@@ -3,24 +3,18 @@ set -euo pipefail
 
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 BREWFILE="$REPO/Brewfile"
-STOW_DIR="$REPO/stow"
-STOW_PACKAGES=(common macos)
-HOST_NAME=$(hostname)
-HOST_PACKAGE="host-$HOST_NAME"
-if [[ -d "$STOW_DIR/$HOST_PACKAGE" ]]; then
-  STOW_PACKAGES+=("$HOST_PACKAGE")
-fi
 CHECK_ONLY=false
 INSTALL_BREW=false
-STOW_FAILURES=0
-BREW_FAILURES=0
 
 usage() {
   cat <<'EOF'
-Usage: ./setup [--check] [--brew]
+Usage: ./setup --brew [--check]
 
-  --check  validate Stow, mise configuration, and the environment without changing files
-  --brew   install applications and tools from Brewfile, without stowing files
+  --brew   install applications from Brewfile, without running mise bootstrap
+  --check  check the Brewfile without installing applications
+
+Mise is the primary setup interface. Use `mise bootstrap` for tools and
+configuration; this command remains only for the Homebrew-managed GUI casks.
 EOF
 }
 
@@ -29,26 +23,17 @@ fail() {
   exit 1
 }
 
-warn() {
-  printf 'setup: WARNING: %s\n' "$*" >&2
-}
-
 require_command() {
   local command_name=$1
   command -v "$command_name" >/dev/null 2>&1 || fail "$command_name is not installed"
 }
 
 check_homebrew_bundle() {
-  if ! command -v brew >/dev/null 2>&1; then
-    warn "Homebrew is not installed; skipping Brewfile check"
-    return 0
-  fi
-
+  require_command brew
   [[ -f "$BREWFILE" ]] || fail "Brewfile is missing: $BREWFILE"
 
   if ! HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_ENV_HINTS=1 brew bundle check --file="$BREWFILE"; then
-    warn "Homebrew bundle is not complete; run ./setup --brew"
-    BREW_FAILURES=$((BREW_FAILURES + 1))
+    fail "Homebrew bundle check failed"
   fi
 }
 
@@ -56,32 +41,9 @@ install_homebrew_bundle() {
   require_command brew
   [[ -f "$BREWFILE" ]] || fail "Brewfile is missing: $BREWFILE"
 
-  printf 'Installing applications and tools from %s...\n' "$BREWFILE"
+  printf 'Installing GUI applications from %s...\n' "$BREWFILE"
   HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --file="$BREWFILE"
   printf 'Homebrew setup complete.\n'
-}
-
-stow_command() {
-  stow --no-folding --target="$HOME" --dir="$STOW_DIR" "$@"
-}
-
-check_stow() {
-  require_command stow
-  [[ -d "$STOW_DIR" ]] || fail "Stow directory is missing: $STOW_DIR"
-
-  if ! stow_command --simulate --verbose=1 "${STOW_PACKAGES[@]}"; then
-    warn "Stow found conflicting home paths; no files were changed"
-    warn "Resolve, remove, or intentionally adopt the conflicts, then rerun ./setup"
-    STOW_FAILURES=$((STOW_FAILURES + 1))
-  fi
-}
-
-apply_stow() {
-  if ! stow_command --simulate --verbose=1 "${STOW_PACKAGES[@]}"; then
-    fail "Stow found conflicts; resolve, remove, or intentionally adopt them, then rerun ./setup"
-  fi
-
-  stow_command "${STOW_PACKAGES[@]}"
 }
 
 while (($#)); do
@@ -118,25 +80,14 @@ fi
 [[ "$(uname -s)" == "Darwin" ]] || fail "this profile supports macOS only"
 [[ "$(uname -m)" == "arm64" ]] || fail "this profile supports Apple Silicon only"
 
-if [[ "$INSTALL_BREW" == true ]]; then
-  if [[ "$CHECK_ONLY" == true ]]; then
-    check_homebrew_bundle
-    (( BREW_FAILURES == 0 )) || fail "Homebrew bundle check failed"
-    printf 'Homebrew check complete. No files or applications were changed.\n'
-  else
-    install_homebrew_bundle
-  fi
-  exit 0
+if [[ "$INSTALL_BREW" != true ]]; then
+  usage >&2
+  exit 2
 fi
-
-check_stow
 
 if [[ "$CHECK_ONLY" == true ]]; then
-  (( STOW_FAILURES == 0 )) || fail "Stow check failed"
-  printf 'Check complete. No files or applications were changed.\n'
-  exit 0
+  check_homebrew_bundle
+  printf 'Homebrew check complete. No applications were changed.\n'
+else
+  install_homebrew_bundle
 fi
-
-apply_stow
-mise install
-printf 'Remaining dotfiles stowed and mise tools installed.\n'

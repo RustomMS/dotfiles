@@ -4,23 +4,19 @@ This repository contains Rustom's personal macOS configuration.
 
 ## Current setup
 
-`./setup` is the installation entry point for Apple Silicon macOS. It uses the current `$HOME` and hostname rather than assuming a particular account or machine.
+Mise is the installation entry point for Apple Silicon macOS:
 
-- `./setup --check` simulates Stow and validates the mise configuration without changing the live home directory.
-- `./setup` stows configuration and then installs the tools declared in mise.
-- `./setup --brew` installs the tools and applications listed in `Brewfile` without stowing configuration.
-- `./setup --check --brew` checks the Homebrew bundle without installing it.
+- `mise bootstrap --dry-run` previews tools, packages, and configuration without changing the live home directory.
+- `mise bootstrap --yes` applies the declarative workstation configuration.
+- `mise bootstrap status --missing` checks whether declared resources converge.
+- `./setup --brew` installs the GUI applications retained in `Brewfile`.
+- `./setup --check --brew` checks those Homebrew applications without installing them.
 
-GNU Stow links these packages into the home directory:
+Mise manages the repository's tools, dotfiles, shell configuration, host-specific laptop environment, and Pi configuration. Homebrew retains ownership of GUI casks listed in `Brewfile`. The `setup` helper is only the Homebrew cask interface.
 
-- `stow/common/` — portable shell, Git, editor, tmux, SSH, and tool configuration
-- `stow/macos/` — macOS application configuration
-- `stow/pi/` — personal Pi configuration
-- `stow/host-<hostname>/` — optional host-specific configuration selected automatically
+Configuration sources live under `home/` and use each tool's native format. `mise.toml` contains common bootstrap declarations; `mise.laptop.toml` contains laptop-specific declarations; `.miserc.toml` selects the laptop environment by default; and `home/.config/mise/config.toml` contains global workstation tools.
 
-Stow conflicts stop setup without moving existing paths. Configuration stays in each tool's native format.
-
-Inspect `./setup` before changing its behaviour. Keep personal Git identity, private SSH hosts, secrets, and machine-local shell settings in the local files described by the examples at the repository root.
+Inspect `setup` before changing its behaviour. Keep personal Git identity, private SSH hosts, secrets, and machine-local shell settings in the local files described by the examples at the repository root.
 
 ## Scope
 
@@ -47,9 +43,9 @@ Do not rewrite readable configuration into another format without a clear benefi
 - Keep changes small and focused.
 - Do not change unrelated configuration.
 - Do not incorporate untracked files without reviewing them first.
-- Do not run `./setup` unless the user asks to change the live home directory.
+- Do not run `mise bootstrap` unless the user asks to change the live home directory.
 - Never delete credentials, private keys, or user data.
-- Do not use Stow's `--adopt` option automatically; use it only after explicitly reviewing the existing target.
+- Use Mise's conflict-safe dotfile behavior; review `--dry-run` before an explicit force operation.
 
 ## Validation
 
@@ -57,9 +53,9 @@ Validate the behaviour affected by the change:
 
 - Always run `git diff --check`.
 - For shell changes, run `bash -n` and ShellCheck when available.
-- For Stow package changes, run `./setup --check`; do not run apply mode merely to validate.
-- Run the affected tool's native checks when available.
-- For setup changes, confirm conflicts leave existing paths untouched.
+- For Mise configuration changes, run `mise bootstrap plan`, `mise bootstrap status --missing`, and the affected tool's native checks.
+- For Homebrew cask changes, run `./setup --check --brew`.
+- Confirm unmanaged local files and Pi state remain untouched when changing additive mappings.
 
 Do not claim behaviour was tested unless the corresponding command was run successfully.
 
@@ -69,5 +65,5 @@ Use small, focused Conventional Commits, for example:
 
 - `docs: update repository instructions`
 - `feat: add shell aliases`
-- `refactor: simplify setup links`
+- `refactor: simplify bootstrap configuration`
 - `chore: update editor configuration`

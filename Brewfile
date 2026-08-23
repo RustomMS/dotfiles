@@ -2,7 +2,6 @@ tap "nikitabobko/tap"
 
 # mise is installed manually before mise bootstrap.
 # brew "mise"
-brew "stow"
 
 cask "aerospace"
 cask "betterdisplay"
