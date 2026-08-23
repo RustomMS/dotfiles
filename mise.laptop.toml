@@ -1,5 +1,11 @@
 [bootstrap.packages]
 "brew:vim" = "latest"
+"brew-cask:betterdisplay" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:maccy" = "latest"
+"brew-cask:obsidian" = "latest"
+"brew-cask:stats" = "latest"
+"brew-cask:wezterm" = "latest"
 
 [dotfiles]
 "~/.bashrc.local" = {

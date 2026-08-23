@@ -6,13 +6,13 @@ This repository contains Rustom's personal macOS configuration.
 
 Mise is the installation entry point for Apple Silicon macOS:
 
-- `mise bootstrap --dry-run` previews tools, packages, and configuration without changing the live home directory.
+- `mise bootstrap --dry-run` previews tools, packages, casks, and configuration without changing the live home directory.
 - `mise bootstrap --yes` applies the declarative workstation configuration.
 - `mise bootstrap status --missing` checks whether declared resources converge.
-- `./setup --brew` installs the GUI applications retained in `Brewfile`.
-- `./setup --check --brew` checks those Homebrew applications without installing them.
+- `./setup --brew` installs the AeroSpace cask retained in `Brewfile`.
+- `./setup --check --brew` checks that Homebrew exception without installing it.
 
-Mise manages the repository's tools, dotfiles, shell configuration, host-specific laptop environment, and Pi configuration. Homebrew retains ownership of GUI casks listed in `Brewfile`. The `setup` helper is only the Homebrew cask interface.
+Mise manages the repository's tools, dotfiles, shell configuration, host-specific laptop environment, Pi configuration, and supported Homebrew casks through its native `brew-cask` backend. Existing casks must be released from Homebrew ownership before applying this migration; review the dry run rather than allowing two managers to own an app. AeroSpace remains Homebrew-managed because its custom tap does not publish the API metadata required by mise. The `setup` helper is only the Homebrew interface for that exception.
 
 Configuration sources live under `home/` and use each tool's native format. `mise.toml` contains common bootstrap declarations; `mise.laptop.toml` contains laptop-specific declarations; `.miserc.toml` selects the laptop environment by default; and `home/.config/mise/config.toml` contains global workstation tools.
 
@@ -45,7 +45,8 @@ Do not rewrite readable configuration into another format without a clear benefi
 - Do not incorporate untracked files without reviewing them first.
 - Do not run `mise bootstrap` unless the user asks to change the live home directory.
 - Never delete credentials, private keys, or user data.
-- Use Mise's conflict-safe dotfile behavior; review `--dry-run` before an explicit force operation.
+- Use Mise's conflict-safe package and dotfile behavior; review `--dry-run` before an explicit force operation.
+- Do not let Homebrew and Mise own the same cask. Release Homebrew ownership deliberately before migrating a cask.
 
 ## Validation
 
@@ -54,8 +55,8 @@ Validate the behaviour affected by the change:
 - Always run `git diff --check`.
 - For shell changes, run `bash -n` and ShellCheck when available.
 - For Mise configuration changes, run `mise bootstrap plan`, `mise bootstrap status --missing`, and the affected tool's native checks.
-- For Homebrew cask changes, run `./setup --check --brew`.
-- Confirm unmanaged local files and Pi state remain untouched when changing additive mappings.
+- For Homebrew exception changes, run `./setup --check --brew`.
+- Confirm unmanaged local files, application data, and Pi state remain untouched when changing mappings.
 
 Do not claim behaviour was tested unless the corresponding command was run successfully.
 
