@@ -49,6 +49,17 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 on-mode-changed = []
 
+# Assign applications to workspaces when their windows are opened.
+# Workspace 0 is represented by workspace 10 in AeroSpace bindings below
+# (ctrl-0 / 0 in nav mode).
+on-window-detected = [
+    { if = 'test %{app-bundle-id} = org.mozilla.firefox', run = 'move-node-to-workspace 1' },
+    { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = 'move-node-to-workspace 2' },
+    { if = 'test %{app-bundle-id} = com.hnc.Discord', run = 'move-node-to-workspace 3' },
+    { if = 'test %{app-bundle-id} = net.whatsapp.WhatsApp', run = 'move-node-to-workspace 3' },
+    { if = 'test %{app-bundle-id} = net.cozic.joplin-desktop', run = 'move-node-to-workspace 10' },
+]
+
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 [key-mapping]
