@@ -8,8 +8,8 @@
  */
 
 import { isAbsolute, relative, resolve, sep } from "node:path";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 // ANSI yellow (33) matching ~/.claude/statusline-command.sh
 const STATS_YELLOW = "\x1b[33m";
