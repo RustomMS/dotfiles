@@ -48,6 +48,14 @@ Do not rewrite readable configuration into another format without a clear benefi
 - Use Mise's conflict-safe package and dotfile behavior; review `--dry-run` before an explicit force operation.
 - Do not let Homebrew and Mise own the same cask. Release Homebrew ownership deliberately before migrating a cask.
 
+## Working directories
+
+Check these ignored local directories for context before starting work.
+
+- `.scratch/` holds working notes, baselines, and one-off task artifacts:
+  exported state, logs, migration plans.
+- `.intent/` holds prompts and planning docs for a specific task.
+
 ## Validation
 
 Validate the behaviour affected by the change:
