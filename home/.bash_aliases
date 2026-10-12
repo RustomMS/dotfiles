@@ -26,7 +26,15 @@ alias rfmtfixpr="rustfmt +nightly --config-path \"\$RUSTFMT_CONFIG\" \$({ git di
 # Git related
 alias gr='cd $(git rev-parse --show-toplevel)'
 
+# Diff the current branch against its merge base with hunk.
+prdiff() {
+  local merge_base
+  merge_base=$(git merge-base HEAD origin/HEAD) || return
+  hunk diff "$merge_base" "$@"
+}
+
 alias vim='nvim'
+alias hs='history 55'
 alias bell='printf "\\a"'
 
 # Run a command and copy its output to the clipboard.
