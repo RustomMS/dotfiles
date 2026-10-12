@@ -20,7 +20,7 @@ import { createFooterSession } from "./lib/footer-session.ts";
 import { OVERVIEW_VISIBILITY_EVENT } from "./subagent/tracker.ts";
 
 // Set true to show request, AI-turn, and session durations in the footer.
-const SHOW_FOOTER_TIME_TRACKING = false;
+const SHOW_FOOTER_TIME_TRACKING = true;
 
 // Statuses rendered on lines 1 and 2 instead of the built-in status line.
 const CONSUMED_STATUSES = new Set(["cache-warming", "subagent-summary", "advisor-usage"]);
