@@ -1,6 +1,6 @@
 {
   "defaultProvider": "openrouter",
-  "defaultModel": "openai/gpt-5.6-luna",
+  "defaultModel": "openai/gpt-6-luna",
   "editorPaddingX": 2,
   "steeringMode": "one-at-a-time",
   "enableInstallTelemetry": false,
@@ -11,7 +11,8 @@
     "npm:@aliou/pi-guardrails@0.17.0",
     "npm:pi-herdr-subagents",
     "npm:@plannotator/pi-extension",
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:@earendil-works/pi-radius"
   ],
   "hideThinkingBlock": false,
   "enabledModels": [
@@ -20,16 +21,16 @@
     "openrouter/cohere/north-mini-code:free",
     "openrouter/nvidia/nemotron-3.5-lightning:free",
     "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-    "openrouter/anthropic/claude-haiku-4.5",
-    "openrouter/openai/gpt-5.6-luna"
+    "openrouter/openai/gpt-6-luna",
+    "openrouter/anthropic/claude-haiku-5.5"
   ],
   "terminal": {
     "showTerminalProgress": true
   },
   "treeFilterMode": "user-only",
   "followUpMode": "one-at-a-time",
-  "lastChangelogVersion": "0.84.2",
-    "enableSkillCommands": true,
+  "lastChangelogVersion": "1.1.0",
+  "enableSkillCommands": true,
   "transport": "auto",
   "httpIdleTimeoutMs": 300000,
   "showCacheMissNotices": true,
