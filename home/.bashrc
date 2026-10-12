@@ -31,8 +31,8 @@ if [[ -x /opt/homebrew/bin/brew ]]; then
    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-if [[ -x /opt/homebrew/bin/mise ]]; then
-   eval "$(/opt/homebrew/bin/mise activate bash)"
+if [[ -x ~/.local/bin/mise ]]; then
+   eval "$(~/.local/bin/mise activate bash)"
 fi
 
 export EDITOR=nvim
