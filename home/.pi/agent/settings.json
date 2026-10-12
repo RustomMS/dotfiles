@@ -4,13 +4,12 @@
   "editorPaddingX": 2,
   "steeringMode": "one-at-a-time",
   "enableInstallTelemetry": false,
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "theme": "everforest",
   "packages": [
-    "npm:pi-vim@0.3.2",
-    "npm:pi-terminal-signals@0.1.0",
+    "npm:pi-vim",
     "npm:@aliou/pi-guardrails@0.17.0",
-    "npm:pi-subagents",
+    "npm:pi-herdr-subagents",
     "npm:@plannotator/pi-extension",
     "npm:pi-web-access"
   ],
@@ -30,9 +29,9 @@
   "treeFilterMode": "user-only",
   "followUpMode": "one-at-a-time",
   "lastChangelogVersion": "0.84.2",
-  "tuiMode": "regular",
-  "enableSkillCommands": true,
+    "enableSkillCommands": true,
   "transport": "auto",
   "httpIdleTimeoutMs": 300000,
-  "showCacheMissNotices": true
+  "showCacheMissNotices": true,
+  "cacheWarming": "idle"
 }
