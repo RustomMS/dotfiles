@@ -73,3 +73,9 @@
   source = "home/.config/mise/config.toml",
   mode = "symlink",
 }
+
+[bootstrap.repos]
+"external-skills/mattpocock-skills" = { url = "https://github.com/mattpocock/skills.git", ref = "main" }
+"external-skills/humanlayer-skills" = { url = "https://github.com/humanlayer/skills.git", ref = "main" }
+"external-skills/pstack" = { url = "https://github.com/backnotprop/pstack.git", ref = "main" }
+"external-skills/backnotprop-bro" = { url = "https://github.com/backnotprop/bro.git", ref = "main" }

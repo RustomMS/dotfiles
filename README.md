@@ -38,7 +38,7 @@ Install or check the remaining Homebrew-managed application separately:
 ./setup --check --brew
 ```
 
-Mise manages the workstation configuration and the supported Homebrew casks through its native `brew-cask` bootstrap backend. The existing cask installations must be released from Homebrew ownership before applying this migration. AeroSpace remains in `Brewfile` because its custom tap does not publish the API metadata that mise requires. The `setup` helper is only the Homebrew interface for that exception. Pi configuration is managed additively by Mise while authentication, sessions, history, and other user state remain in `~/.pi/agent`.
+Mise manages the workstation configuration and the supported Homebrew casks through its native `brew-cask` bootstrap backend. The existing cask installations must be released from Homebrew ownership before applying this migration. AeroSpace remains in `Brewfile` because its custom tap does not publish the API metadata that mise requires. The `setup` helper is only the Homebrew interface for that exception. Pi configuration is managed additively by Mise while authentication, sessions, history, and other user state remain in `~/.pi/agent`. Personal Pi skills live under `home/.pi/agent/skills`; selected third-party skills are loaded directly from Mise-managed checkouts under the git-ignored `external-skills/` directory.
 
 ## Configuration
 

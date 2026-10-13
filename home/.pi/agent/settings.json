@@ -14,6 +14,24 @@
     "npm:pi-web-access",
     "npm:@earendil-works/pi-radius"
   ],
+  "skills": [
+    "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/ask-matt",
+    "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/grill-with-docs",
+    "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/improve-codebase-architecture",
+    "../../dotfiles/external-skills/mattpocock-skills/skills/productivity/grill-me",
+    "../../dotfiles/external-skills/mattpocock-skills/skills/productivity/grilling",
+    "../../dotfiles/external-skills/mattpocock-skills/skills/productivity/handoff",
+    "../../dotfiles/external-skills/humanlayer-skills/plugins/show-me/skills/show-me",
+    "../../dotfiles/external-skills/pstack/skills/unslop",
+    "../../dotfiles/external-skills/pstack/skills/create-verification-skill",
+    "../../dotfiles/external-skills/pstack/skills/maintain-verification-skill",
+    "../../dotfiles/external-skills/pstack/skills/blast-radius",
+    "../../dotfiles/external-skills/pstack/skills/arena",
+    "../../dotfiles/external-skills/pstack/skills/how",
+    "../../dotfiles/external-skills/pstack/skills/why",
+    "../../dotfiles/external-skills/pstack/skills/teach",
+    "../../dotfiles/external-skills/backnotprop-bro/skills/bro"
+  ],
   "hideThinkingBlock": false,
   "enabledModels": [
     "openrouter/openrouter/free",
