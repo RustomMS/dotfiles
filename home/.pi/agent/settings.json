@@ -15,6 +15,7 @@
     "npm:@earendil-works/pi-radius"
   ],
   "skills": [
+    "../../dotfiles/skills",
     "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/ask-matt",
     "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/grill-with-docs",
     "../../dotfiles/external-skills/mattpocock-skills/skills/engineering/improve-codebase-architecture",
